@@ -1,59 +1,69 @@
-import { client } from 'websocket'
-import { rconCommand } from '.'
+// import { client } from 'websocket'
+// import { rconCommand } from '.'
 
-const rcon = new client()
-const rcon_secret = process.env.RCON_SECRET
-const rcon_ip = process.env.RCON_IP
-const rcon_port = process.env.RCON_PORT
+// const rcon = new client()
+// const rcon_secret = process.env.RCON_SECRET
+// const rcon_ip = process.env.RCON_IP
+// const rcon_port = process.env.RCON_PORT
 
-rcon.on('connectFailed', (error) => {
+// rcon.on('connectFailed', (error) => {
 
-    console.log(`connection failed: ${error}`)
+//     console.log(`connection failed: ${error}`)
 
-})
+// })
 
-rcon.on('connect', (connection) => {
+// rcon.on('connect', (connection) => {
     
-    console.log('connected')
+//     console.log('connected')
 
-    connection.on('message', (message) => {
+//     connection.on('message', (message) => {
 
-        if(message.type === 'utf8'){
+//         if(message.type === 'utf8'){
 
-            const { utf8Data } = message
+//             const { utf8Data } = message
 
-            try {
+//             try {
 
-                console.log(JSON.parse(utf8Data))
+//                 console.log(JSON.parse(utf8Data))
 
-            } catch (error) {
+//             } catch (error) {
 
-                console.log(utf8Data)
+//                 console.log(utf8Data)
                 
-            }
-        }
+//             }
+//         }
 
-    })
+//     })
 
-    connection.on('close', () => {
+//     connection.on('close', () => {
 
-        console.log('connection closed')
+//         console.log('connection closed')
 
-    })
+//     })
 
-    connection.on('error', (error) => {
+//     connection.on('error', (error) => {
 
-        console.log(`connection error: ${error.toString()}`)
-    })
+//         console.log(`connection error: ${error.toString()}`)
+//     })
     
 
-    const payload : rconCommand = {
-        Identifier: -1,
-        Message: 'playerlist',
-        Name: 'WebRcon'
-    };
+//     const payload : rconCommand = {
+//         Identifier: -1,
+//         Message: 'playerlist',
+//         Name: 'WebRcon'
+//     };
 
-    connection.sendUTF(JSON.stringify(payload))
-})
+//     connection.sendUTF(JSON.stringify(payload))
+// })
 
-rcon.connect(`ws://${rcon_ip}:${rcon_port}/${rcon_secret}`)
+// rcon.connect(`ws://${rcon_ip}:${rcon_port}/${rcon_secret}`)
+
+
+import RCON from './services/rcon'
+
+const rcon = RCON.singleton()
+
+
+setTimeout(() => {
+    rcon.send('playerlist', 2)
+}, 1000);
