@@ -40,7 +40,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // rcon.connect(`ws://${rcon_ip}:${rcon_port}/${rcon_secret}`)
 const rcon_1 = __importDefault(require("./services/rcon"));
 const rcon = rcon_1.default.singleton();
+rcon.on('message', (data) => {
+});
 setTimeout(() => {
     rcon.send('playerlist', 2);
 }, 1000);
-//# sourceMappingURL=app.js.map

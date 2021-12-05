@@ -1,8 +1,14 @@
 import { client, connection } from 'websocket'
 import { EventEmitter } from 'events'
-import { rconCommand } from '../.'
+import { rconCommand } from 'types/common/interfaces'
 
 let instance : RCON | null
+
+declare interface RCON {
+    on(event: 'message', cb: (message: JSON | string) => void): this
+    on(event: 'connect', cb: () => void): this
+    on(event: 'disconnect'): void
+}
 
 class RCON extends EventEmitter{
 
@@ -72,9 +78,10 @@ class RCON extends EventEmitter{
         this.websocket.on('connect', (connection) => {
 
             console.log(`connected to: ${this.rcon_ip}:${this.rcon_port}`)
+
             this.connection = connection
             
-            this.emit('connected')
+            this.emit('connect')
 
             connection.on('message', (message) => {
                 
@@ -88,15 +95,11 @@ class RCON extends EventEmitter{
     
                         response = JSON.parse(utf8Data)
 
-                        console.log(response)
-
                         this.emit('message', response)
         
                     } catch (error) {
         
                         // response is a string
-
-                        console.log(utf8Data)
 
                         response = utf8Data
 
@@ -110,12 +113,16 @@ class RCON extends EventEmitter{
             connection.on('close', () => {
 
                 console.log('connection closed')
+                
+                this.emit('disconnect')
+                this.connection = null
         
             })
         
             connection.on('error', (error) => {
         
                 console.log(`connection error: ${error.toString()}`)
+
             })
 
         })
