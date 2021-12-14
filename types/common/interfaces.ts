@@ -3,3 +3,5 @@ export interface rconCommand {
     Message: string | object,
     Name: 'WebRcon'
 }
+
+export type rconMessage = JSON | string

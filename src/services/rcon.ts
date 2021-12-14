@@ -1,11 +1,11 @@
 import { client, connection } from 'websocket'
 import { EventEmitter } from 'events'
-import { rconCommand } from 'types/common/interfaces'
+import { rconCommand, rconMessage } from 'types/common/interfaces'
 
 let instance : RCON | null
 
 declare interface RCON {
-    on(event: 'message', cb: (message: JSON | string) => void): this
+    on(event: 'message', cb: (message: rconMessage ) => void): this
     on(event: 'connect', cb: () => void): this
     on(event: 'disconnect'): void
 }
@@ -46,18 +46,33 @@ class RCON extends EventEmitter{
 
     public send(command : string, identifier : number = -1 ) : void {
 
+        if(this.connection == null){
+            console.log('typeof var "connection" is null')
+            return
+        }
+
         const payload : rconCommand = {
             Identifier: identifier,
             Message: command,
             Name: 'WebRcon'
         }
 
-        if(this.connection == null){
-            console.log('typeof var "connection" is null')
-            return
-        }
+        console.log(payload)
 
         this.connection.sendUTF(JSON.stringify(payload))
+
+    }
+
+    public async sendAsync(command: string, identifier: number = -1 ) : Promise<rconMessage> {
+
+        if(!this.connection || !this.connection.connected) return new Promise( (reject) => reject('nope'))
+
+        this.send(command, identifier)
+
+        return new Promise( (resolve, reject) => {
+            this.connection!.once('message', (resp) => resolve(resp))
+            this.connection!.once('error', (err) => reject(err))
+        })
 
     }
 
