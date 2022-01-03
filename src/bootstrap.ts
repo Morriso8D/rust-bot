@@ -1,13 +1,28 @@
-import { readFileSync } from 'fs'
+import * as config  from '../config.json'
+import { config as configJson } from 'types/interfaces'
 
-try {
+export async function bootstrap() : Promise<string[]>{
     
-    const config : JSON = JSON.parse(readFileSync('./config.json', 'utf8'))
+    const configObj : configJson.json = Object(config)
+    let built: string[] = []
 
-    console.log(config)
+    /**
+     * bootstrap discord
+     */
+    if(configObj.discord){
+        const discord = await new (await import('./services/discord/discord')).default()
+        if(configObj.discord.players_online) discord.runPlayersOnline()
+        if(configObj.discord.logs && configObj.discord.logs.chat_channel_id) discord.runChatLogging(configObj.discord.logs.chat_channel_id)
+        built.push('discord')
+    }
 
-} catch (err){
+    /**
+     * bootstrap CLI
+     */
+    if(configObj.cli){
+        await new (await import('./services/cli/cli')).default()
+        built.push('CLI')
+    }
 
-    console.error(err)
-
+    return built
 }

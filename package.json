@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "typings": "./types/main.d.ts",
   "scripts": {
     "start": "tsc && node -r dotenv/config dist/app.js",
     "dev": "nodemon -r dotenv/config src/app.ts",

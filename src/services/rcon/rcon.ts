@@ -1,10 +1,10 @@
 import { client, connection } from 'websocket'
 import { EventEmitter } from 'events'
-import { rconCommand, rconMessage } from 'types/common/interfaces'
+import { rconCommand, rconMessage } from 'types/interfaces'
 
 let instance : RCON | null
 
-declare interface RCON {
+interface RCON {
     on(event: 'message', cb: (message: rconMessage ) => void): this
     on(event: 'connect', cb: () => void): this
     on(event: 'disconnect'): void
@@ -16,7 +16,7 @@ class RCON extends EventEmitter{
     private rcon_secret : string | undefined
     private rcon_port : string | undefined
     private websocket : client
-    private connection : connection | null
+    private connection : connection | undefined
 
     constructor(){
         super()
@@ -24,10 +24,9 @@ class RCON extends EventEmitter{
         this.rcon_ip = process.env.RCON_IP
         this.rcon_secret = process.env.RCON_SECRET
         this.rcon_port = process.env.RCON_PORT
-        this.connection = null
         this.websocket = new client()
         
-        this.setupEvents()
+        this.bindEvents()
         this.websocket.connect(this.computeEndpoint())
 
     }
@@ -46,7 +45,7 @@ class RCON extends EventEmitter{
 
     public send(command : string, identifier : number = -1 ) : void {
 
-        if(this.connection == null){
+        if(!this.connection){
             console.log('typeof var "connection" is null')
             return
         }
@@ -65,7 +64,7 @@ class RCON extends EventEmitter{
 
     public async sendAsync(command: string, identifier: number = -1 ) : Promise<rconMessage> {
 
-        if(!this.connection || !this.connection.connected) return new Promise( (reject) => reject('nope'))
+        if(!this.connection) return new Promise( (reject) => reject('connection undefined'))
 
         this.send(command, identifier)
 
@@ -82,7 +81,7 @@ class RCON extends EventEmitter{
 
     }
 
-    private setupEvents() : void {
+    private bindEvents() : void {
 
         this.websocket.on('connectFailed', (error) => {
 
@@ -97,51 +96,60 @@ class RCON extends EventEmitter{
             this.connection = connection
             
             this.emit('connect')
-
-            connection.on('message', (message) => {
-                
-                if(message.type === 'utf8'){
-
-                    const { utf8Data } = message
-
-                    let response : JSON | string
-        
-                    try {
-    
-                        response = JSON.parse(utf8Data)
-
-                        this.emit('message', response)
-        
-                    } catch (error) {
-        
-                        // response is a string
-
-                        response = utf8Data
-
-                        this.emit('message', response)
-                        
-                    }
-                }
-
-            })
-
-            connection.on('close', () => {
-
-                console.log('connection closed')
-                
-                this.emit('disconnect')
-                this.connection = null
-        
-            })
-        
-            connection.on('error', (error) => {
-        
-                console.log(`connection error: ${error.toString()}`)
-
-            })
-
+            this.handleMessage(connection)
+            this.handleClose(connection)
+            this.handleConnectionError(connection)
         })
 
+    }
+
+    private handleMessage(connection: connection) : void{
+        connection.on('message', (message) => {
+                
+            if(message.type === 'utf8'){
+
+                const { utf8Data } = message
+
+                let response : JSON | string
+    
+                try {
+
+                    response = JSON.parse(utf8Data)
+
+                    this.emit('message', response)
+    
+                } catch (error) {
+    
+                    // response is a string
+
+                    response = utf8Data
+
+                    this.emit('message', response)
+                    
+                }
+            }
+
+        })
+    }
+
+    private handleClose(connection: connection) : void{
+        connection.on('close', () => {
+
+            console.log('connection closed')
+            
+            this.emit('disconnect')
+
+            this.connection = undefined
+    
+        })
+    }
+
+    private handleConnectionError(connection: connection) : void{
+        connection.on('error', (error) => {
+        
+            console.log(`connection error: ${error.toString()}`)
+
+        })
     }
 
     private computeEndpoint() : string{
