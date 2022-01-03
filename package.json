@@ -2,10 +2,10 @@
   "name": "rust-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./disct/app.js",
   "typings": "./types/main.d.ts",
   "scripts": {
-    "start": "tsc && node -r dotenv/config dist/app.js",
+    "start": "tsc && node -r dotenv/config dist/src/app.js",
     "dev": "nodemon -r dotenv/config src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@types/websocket": "^1.0.4",
+    "discordx": "^9.1.7",
     "dotenv": "^10.0.0",
     "websocket": "^1.0.34"
   }

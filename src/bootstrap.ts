@@ -10,7 +10,7 @@ export async function bootstrap() : Promise<string[]>{
      * bootstrap discord
      */
     if(configObj.discord){
-        const discord = await new (await import('./services/discord/discord')).default()
+        const discord = await new (await import('./controllers/discord/discord')).default()
         if(configObj.discord.players_online) discord.runPlayersOnline()
         if(configObj.discord.logs && configObj.discord.logs.chat_channel_id) discord.runChatLogging(configObj.discord.logs.chat_channel_id)
         built.push('discord')
@@ -20,7 +20,7 @@ export async function bootstrap() : Promise<string[]>{
      * bootstrap CLI
      */
     if(configObj.cli){
-        await new (await import('./services/cli/cli')).default()
+        await new (await import('./controllers/cli/cli')).default()
         built.push('CLI')
     }
 
