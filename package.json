@@ -2,7 +2,7 @@
   "name": "rust-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "./disct/app.js",
+  "main": "dist/app.js",
   "typings": "./types/main.d.ts",
   "scripts": {
     "start": "tsc && node -r dotenv/config dist/src/app.js",

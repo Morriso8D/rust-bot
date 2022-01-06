@@ -2,15 +2,15 @@ import { client, connection } from 'websocket'
 import { EventEmitter } from 'events'
 import { rconCommand, rconMessage } from 'types/interfaces'
 
-let instance : RCON | null
+let instance : Rcon | null
 
-interface RCON {
+interface Rcon {
     on(event: 'message', cb: (message: rconMessage ) => void): this
     on(event: 'connect', cb: () => void): this
     on(event: 'disconnect'): void
 }
 
-class RCON extends EventEmitter{
+class Rcon extends EventEmitter{
 
     private rcon_ip : string | undefined
     private rcon_secret : string | undefined
@@ -31,11 +31,11 @@ class RCON extends EventEmitter{
 
     }
 
-    static singleton() : RCON {
+    static singleton() : Rcon {
         
         if(!instance){
 
-            instance = new RCON()
+            instance = new Rcon()
 
         }
 
@@ -158,4 +158,4 @@ class RCON extends EventEmitter{
     }
 }
 
-export default RCON
+export default Rcon

@@ -1,6 +1,6 @@
 
 
-class Discord{
+class DiscordController{
 
     constructor(){
         console.log('building discord...')
@@ -15,4 +15,4 @@ class Discord{
     }
 }
 
-export default Discord
+export default DiscordController
