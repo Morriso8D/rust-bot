@@ -1,0 +1,12 @@
+{
+    "discord": {
+        "guild_id":"929721864299876412",
+        "logs": {
+            "chat_channel_id": "123456" 
+        },
+        "players_online": {
+            "chat_channel_id": "929721938069307442"
+        }
+    },
+    "cli": true
+}
