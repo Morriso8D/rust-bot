@@ -4,7 +4,11 @@ export interface rconCommand {
     Name: 'WebRcon'
 }
 
-export type rconMessage = JSON | string
+export type rconMessage = message | string
+
+interface message{
+    Message: any
+}
 
 export namespace config{
 
@@ -14,10 +18,14 @@ export namespace config{
     }
 
     interface discord{
-        players_online: boolean | undefined
+        guild_id: string
+        players_online: players_online | undefined
         logs: logs | undefined
     }
     interface logs{
         chat_channel_id: string | undefined
+    }
+    interface players_online {
+        chat_channel_id: string
     }
 }

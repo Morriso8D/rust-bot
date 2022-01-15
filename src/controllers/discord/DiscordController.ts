@@ -1,13 +1,19 @@
-
+import Discord from "../../services/discord/Discord"
 
 class DiscordController{
 
+    private discord : Discord
+
     constructor(){
         console.log('building discord...')
+        this.discord = Discord.singleton()
     }
 
-    public runPlayersOnline(){
+    public async runPlayersOnline(){
         console.log('with players online...')
+        this.discord.getClient()?.once('ready', () => {
+            this.discord.setupPlayersOnline()
+        })
     }
 
     public runChatLogging(channelId: string){

@@ -1,11 +1,16 @@
 import { client, connection } from 'websocket'
 import { EventEmitter } from 'events'
-import { rconCommand, rconMessage } from 'types/interfaces'
+import { rconCommand, rconMessage } from '../types/interfaces'
 
 let instance : Rcon | null
 
+interface message {
+    Message: any
+}
+
 interface Rcon {
-    on(event: 'message', cb: (message: rconMessage ) => void): this
+    on(event: 'messageJson', cb: (message: any ) => void): this
+    on(event: 'message', cb: (message: string ) => void): this
     on(event: 'connect', cb: () => void): this
     on(event: 'disconnect'): void
 }
@@ -56,7 +61,7 @@ class Rcon extends EventEmitter{
             Name: 'WebRcon'
         }
 
-        console.log(payload)
+        // console.log(payload)
 
         this.connection.sendUTF(JSON.stringify(payload))
 
@@ -64,13 +69,38 @@ class Rcon extends EventEmitter{
 
     public async sendAsync(command: string, identifier: number = -1 ) : Promise<rconMessage> {
 
-        if(!this.connection) return new Promise( (reject) => reject('connection undefined'))
-
         this.send(command, identifier)
 
         return new Promise( (resolve, reject) => {
-            this.connection!.once('message', (resp) => resolve(resp))
-            this.connection!.once('error', (err) => reject(err))
+            if(!this.connection) {
+                console.error(new Error('sendAsync received connection of undefined'))
+                reject('connection undefined')
+            }
+            this.connection!.once('message', (message) => {
+                if(message.type === 'utf8'){
+
+                    const { utf8Data } = message
+    
+                    let response : rconMessage
+        
+                    try {
+    
+                        response = JSON.parse(utf8Data)
+    
+                        resolve(response)
+        
+                    } catch (error) {
+        
+                        // response is a string
+    
+                        response = utf8Data
+    
+                        resolve(response)
+                        
+                    }
+                }
+            })
+            // this.connection!.once('error', (err) => reject(err))
         })
 
     }
@@ -109,22 +139,20 @@ class Rcon extends EventEmitter{
             if(message.type === 'utf8'){
 
                 const { utf8Data } = message
-
-                let response : JSON | string
     
                 try {
 
-                    response = JSON.parse(utf8Data)
+                    const response = JSON.parse(utf8Data)
 
-                    this.emit('message', response)
+                    const { Message } = response
+
+                    this.emit('messageJson', JSON.parse(Message))
     
                 } catch (error) {
     
                     // response is a string
 
-                    response = utf8Data
-
-                    this.emit('message', response)
+                    this.emit('message', utf8Data)
                     
                 }
             }

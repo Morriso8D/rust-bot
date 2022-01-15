@@ -29,8 +29,10 @@ class Cli {
     }
 
     private messageHandler(){
-        this.rcon.on('message', (message) => {
-            console.log(message)
+        this.rcon.on('messageJson', (message) => {
+            console.log('JSON >>>')
+            const { Message } = message
+            console.log(JSON.parse(Message))
         })
     }
 

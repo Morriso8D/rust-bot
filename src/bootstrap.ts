@@ -1,5 +1,5 @@
-import * as config  from '../config.json'
-import { config as configJson } from 'types/interfaces'
+import * as config  from './config.json'
+import { config as configJson } from './types/interfaces'
 
 export async function bootstrap() : Promise<string[]>{
     
