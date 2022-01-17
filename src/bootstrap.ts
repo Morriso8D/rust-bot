@@ -24,5 +24,11 @@ export async function bootstrap() : Promise<string[]>{
         built.push('CLI')
     }
 
+
+    if(configObj.rcon){
+        const rcon = await new (await import('./controllers/rcon/RconController')).default()
+        if(configObj.rcon.commands?.online) rcon.runOnlineCommand()
+    }
+
     return built
 }

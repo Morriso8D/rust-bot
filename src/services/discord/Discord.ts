@@ -4,7 +4,7 @@ import { Client } from 'discordx'
 import { importx } from "@discordx/importer";
 import * as config from "@/config.json"
 import { config as configJson } from '@/types/interfaces'
-import Rcon from "../Rcon";
+import Rcon from "@/services/rcon/Rcon";
 import { isRconObject, isRconUndefined } from "@/helpers";
 
 let instance : Discord | undefined

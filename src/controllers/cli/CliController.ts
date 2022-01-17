@@ -1,4 +1,4 @@
-import Cli from '../../services/Cli'
+import Cli from '@/services/cli/Cli'
 
 class CliController{
 

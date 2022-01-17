@@ -1,4 +1,4 @@
-import Rcon from './Rcon'
+import Rcon from '@/services/rcon/Rcon'
 import { createInterface, Interface } from 'readline'
 
 let instance : Cli | undefined
@@ -29,10 +29,10 @@ class Cli {
     }
 
     private messageHandler(){
-        this.rcon.on('messageJson', (message) => {
-            console.log('JSON >>>')
-            const { Message } = message
-            console.log(JSON.parse(Message))
+        this.rcon.on('message', (message) => {
+            // console.log('JSON >>>')
+            // const { Message } = message
+            // console.log(JSON.parse(Message))
         })
     }
 

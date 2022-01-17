@@ -1,4 +1,4 @@
-import Discord from "../../services/discord/Discord"
+import Discord from "@/services/discord/Discord"
 
 class DiscordController{
 

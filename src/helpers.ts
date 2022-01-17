@@ -1,3 +1,5 @@
+import { chatMessage } from "./types/interfaces"
+
 export function isRconObject(message: any) : message is object{
     if(typeof message === 'object') return true
     return false

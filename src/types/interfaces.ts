@@ -7,7 +7,19 @@ export interface rconCommand {
 export type rconMessage = message | string
 
 interface message{
-    Message: any
+    Message: string
+    Type: string
+    Identifier: number
+    Stacktrace: string | null
+}
+
+export interface chatMessage{
+    Channel: number
+    Message: string
+    UserId: string
+    Username: string
+    Color: string
+    Time: number
 }
 
 export namespace config{
@@ -15,8 +27,15 @@ export namespace config{
     export interface json{
         discord: discord | undefined
         cli: boolean | undefined
+        rcon: rcon | undefined
     }
 
+    interface rcon{
+        commands: commands | undefined
+    }
+    interface commands{
+        online: boolean | undefined
+    }
     interface discord{
         guild_id: string
         players_online: players_online | undefined

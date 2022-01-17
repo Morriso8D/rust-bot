@@ -1,6 +1,6 @@
 import { client, connection } from 'websocket'
 import { EventEmitter } from 'events'
-import { rconCommand, rconMessage } from '../types/interfaces'
+import { rconCommand, rconMessage } from '../../types/interfaces'
 
 let instance : Rcon | null
 
@@ -9,8 +9,7 @@ interface message {
 }
 
 interface Rcon {
-    on(event: 'messageJson', cb: (message: any ) => void): this
-    on(event: 'message', cb: (message: string ) => void): this
+    on(event: 'message', cb: (message: rconMessage ) => void): this
     on(event: 'connect', cb: () => void): this
     on(event: 'disconnect'): void
 }
@@ -144,14 +143,11 @@ class Rcon extends EventEmitter{
 
                     const response = JSON.parse(utf8Data)
 
-                    const { Message } = response
-
-                    this.emit('messageJson', JSON.parse(Message))
+                    this.emit('message', response)
     
                 } catch (error) {
     
                     // response is a string
-
                     this.emit('message', utf8Data)
                     
                 }
