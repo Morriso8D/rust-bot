@@ -8,5 +8,13 @@
             "chat_channel_id": "929721938069307442"
         }
     },
-    "cli": true
+    "cli": true,
+    "rcon": {
+        "commands": {
+            "online": true,
+            "wipe": {
+                "day_of_the_week": 3
+            }
+        }
+    }
 }
