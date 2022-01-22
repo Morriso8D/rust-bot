@@ -1,15 +1,12 @@
 import { isRconObject, isRconUndefined } from "@/helpers"
 import { chatMessage, rconMessage } from "@/types/interfaces"
-import Rcon from "../Rcon"
+import Command from "./Command"
 
 
-class PlayersOnline{
-
-    private rcon : Rcon
-    private lastUse: number | null
+class PlayersOnline extends Command{
 
     constructor(){
-        this.rcon = Rcon.singleton()
+        super()
         this.lastUse = null
     }
 
@@ -19,7 +16,7 @@ class PlayersOnline{
         this.runCommand()
     }
 
-    private validCommand(message: rconMessage) : boolean{
+    protected validCommand(message: rconMessage) : boolean{
         if(!isRconObject(message)) return false
 
         const chatObj : chatMessage = JSON.parse(message.Message)
@@ -30,18 +27,7 @@ class PlayersOnline{
         return false
     }
 
-    private validTimeFrame() : boolean{
-
-        const currentTime = new Date().getTime()
-
-        if(!this.lastUse) return true
-
-        if(typeof this.lastUse === 'number' && currentTime >= this.lastUse + (1000 * 60)) return true
-
-        return false
-    }
-
-    private async runCommand(){
+    protected async runCommand(){
 
         this.lastUse = new Date().getTime()
         const playerlist = await this.rcon?.sendAsync('playerlist', 255)

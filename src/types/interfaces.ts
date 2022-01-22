@@ -35,6 +35,10 @@ export namespace config{
     }
     interface commands{
         online: boolean | undefined
+        wipe: wipe | undefined
+    }
+    interface wipe{
+        day_of_the_week: number | undefined
     }
     interface discord{
         guild_id: string

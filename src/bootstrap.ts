@@ -28,6 +28,7 @@ export async function bootstrap() : Promise<string[]>{
     if(configObj.rcon){
         const rcon = await new (await import('./controllers/rcon/RconController')).default()
         if(configObj.rcon.commands?.online) rcon.runOnlineCommand()
+        if(configObj.rcon.commands?.wipe) rcon.runNextWipeCommand()
     }
 
     return built
