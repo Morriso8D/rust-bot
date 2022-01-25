@@ -35,9 +35,10 @@ class PlayersOnline extends Command{
         if(isRconUndefined(playerlist)) return
         if(!isRconObject(playerlist)) return
 
-        const jsonPlayerlist = JSON.parse(playerlist.Message)
+        const jsonPlayerlist = JSON.parse(playerlist.Message),
+        plural = (jsonPlayerlist.length === 1) ? '' : 's'
 
-        this.rcon.send(`say ${jsonPlayerlist.length} players online`)
+        this.rcon.send(`say ${jsonPlayerlist.length} player${plural} online`)
     }
 }
 
