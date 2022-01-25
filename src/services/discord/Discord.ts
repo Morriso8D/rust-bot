@@ -108,7 +108,7 @@ class Discord{
 
        if(playerList.length > 0){
             playerList.forEach((player) => {
-                fields.push({name: player.DisplayName, value: `${player.ConnectedSeconds / 60} mins`, inline: true})
+                fields.push({name: player.DisplayName, value: `${Math.ceil(player.ConnectedSeconds / 60)} mins`, inline: true})
             })
        }else{
            fields.push({name: 'No one\'s online', value: ':('})
