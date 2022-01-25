@@ -108,8 +108,7 @@ class Discord{
 
        if(playerList.length > 0){
             playerList.forEach((player) => {
-                const rank = player.OwnerSteamID !== '0' ? 'Admin' : 'Player'
-                fields.push({name: rank, value: player.DisplayName, inline: true})
+                fields.push({name: player.DisplayName, value: `${player.ConnectedSeconds / 60} mins`, inline: true})
             })
        }else{
            fields.push({name: 'No one\'s online', value: ':('})
