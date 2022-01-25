@@ -1,9 +1,9 @@
 import "reflect-metadata"
-import { Intents, Interaction, Message } from "discord.js"
+import { EmbedFieldData, Intents, Interaction, Message, MessageEmbed } from "discord.js"
 import { Client } from 'discordx'
 import { importx } from "@discordx/importer";
 import * as config from "@/config.json"
-import { config as configJson } from '@/types/interfaces'
+import { config as configJson, playerlist } from '@/types/interfaces'
 import Rcon from "@/services/rcon/Rcon";
 import { isRconObject, isRconUndefined } from "@/helpers";
 
@@ -14,6 +14,7 @@ class Discord{
     private client : Client | undefined
     private token : string | undefined
     private rcon : Rcon | undefined
+    private embedMessage : Message | undefined
 
     constructor(){
         this.token = process.env.DISCORD_TOKEN
@@ -44,7 +45,7 @@ class Discord{
             silent: false
         });
 
-        this.client.once('ready', async () => {
+        this.client.once('ready', async (client) => {
             // make sure all guilds are in cache
             await this.client?.guilds.fetch()
 
@@ -73,6 +74,70 @@ class Discord{
 
     public getClient() : Client | undefined {
         return this.client
+    }
+
+    private async embedPlayersOnline(playerList: playerlist[]): Promise<void>{
+
+        if(!this.client){
+            console.error(new Error('received client of undefined'))
+            return
+        }
+
+        const configObj : configJson.json = Object(config),
+            guild = this.client.guilds.cache.get(configObj.discord!.guild_id)
+            
+        if(!guild){
+            console.error(new Error('received guild of undefined'))
+            return
+        }
+
+        const channel = guild.channels.cache.get(configObj.discord!.players_online!.chat_channel_id)
+
+        if(!channel){
+            console.error(new Error('received channel of undefined'))
+            return
+        }
+
+         
+        if(!channel.isText()){
+            console.error(new Error('channel is not a text channel'))
+            return
+        }
+
+        let fields : EmbedFieldData[] = [] 
+
+       if(playerList.length > 0){
+            playerList.forEach((player) => {
+                const rank = player.OwnerSteamID !== '0' ? 'Admin' : 'Player'
+                fields.push({name: rank, value: player.DisplayName, inline: true})
+            })
+       }else{
+           fields.push({name: 'No one\'s online', value: ':('})
+       }
+
+        const embed = new MessageEmbed()
+        .setColor('#00d26a')
+        .setTitle('EU Cronch | Vanilla | Solo Duo Trio')
+        .setDescription('Players online:')
+        .addFields(fields)
+        .setTimestamp()
+
+        
+
+        if(this.embedMessage){
+            // edit previous message
+            this.embedMessage.edit({embeds: [embed]})
+        }else{
+            // delete history and start fresh
+            channel.messages.fetch({limit: 10}).then(messages => {
+                messages.forEach(message => {
+                    message.delete()
+                })
+            })
+
+            this.embedMessage = await channel.send({embeds: [embed]})
+        }
+
     }
 
     public setupPlayersOnline(): void{
@@ -119,6 +184,8 @@ class Discord{
             }).catch((reason)=>{
                 console.error(reason)
             })
+
+            this.embedPlayersOnline(jsonPlayerlist)
 
         }, (60000 * 5))
     }

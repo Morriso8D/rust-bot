@@ -22,6 +22,19 @@ export interface chatMessage{
     Time: number
 }
 
+export interface playerlist{
+    SteamID: string
+    OwnerSteamID: string
+    DisplayName: string
+    Ping: number
+    Address: string
+    ConnectedSeconds: number
+    VoiationLevel: number
+    CurrentLevel: number
+    UnspentXp: number
+    Health: number
+}
+
 export namespace config{
 
     export interface json{

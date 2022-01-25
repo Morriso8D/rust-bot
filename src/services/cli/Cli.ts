@@ -1,3 +1,4 @@
+import { isRconObject } from '@/helpers'
 import Rcon from '@/services/rcon/Rcon'
 import { createInterface, Interface } from 'readline'
 
@@ -31,6 +32,7 @@ class Cli {
     private messageHandler(){
         this.rcon.on('message', (message) => {
             // console.log('JSON >>>')
+            // if(!isRconObject(message)) return
             // const { Message } = message
             // console.log(JSON.parse(Message))
         })
