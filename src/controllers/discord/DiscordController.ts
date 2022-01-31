@@ -1,4 +1,6 @@
+import { isDiscordClientUndefined } from "@/helpers"
 import Discord from "@/services/discord/Discord"
+import { setupPlayersOnline } from "@/services/discord/embeds/playersonline"
 
 class DiscordController{
 
@@ -12,7 +14,11 @@ class DiscordController{
     public async runPlayersOnline(){
         console.log('with players online...')
         this.discord.getClient()?.once('ready', () => {
-            this.discord.setupPlayersOnline()
+
+            const client = this.discord.getClient()
+            if(!isDiscordClientUndefined(client)) setupPlayersOnline(client)
+
+            else console.error(new Error('received discord client of undefined'))
         })
     }
 

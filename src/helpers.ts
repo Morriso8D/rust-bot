@@ -16,3 +16,8 @@ export function isRconUndefined(message: any) : message is undefined{
     console.error(new Error('received rconMessage of undefined'))
     return true
 }
+
+export function isDiscordClientUndefined(client: any) : client is undefined{
+    if(typeof client !== 'undefined') return false
+    return true
+}
