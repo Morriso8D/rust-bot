@@ -1,4 +1,4 @@
-import { chatMessage } from "./types/interfaces"
+import { chatMessage, reportMessage } from "./types/interfaces"
 
 export function isRconObject(message: any) : message is object{
     if(typeof message === 'object') return true
@@ -20,4 +20,13 @@ export function isRconUndefined(message: any) : message is undefined{
 export function isDiscordClientUndefined(client: any) : client is undefined{
     if(typeof client !== 'undefined') return false
     return true
+}
+
+export function isRconReportMessage(message: any) : message is reportMessage{
+    if(typeof message === 'object' && message.PlayerId && 
+        message.PlayerName && message.TargetId && 
+        message.TargetName && message.Subject && 
+        message.Message && message.Type) return true
+
+    return false
 }

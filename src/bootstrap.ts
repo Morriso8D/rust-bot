@@ -12,7 +12,8 @@ export async function bootstrap() : Promise<string[]>{
     if(configObj.discord){
         const discord = await new (await import('./controllers/discord/DiscordController')).default()
         if(configObj.discord.players_online) discord.runPlayersOnline()
-        if(configObj.discord.logs && configObj.discord.logs.chat_channel_id) discord.runChatLogging(configObj.discord.logs.chat_channel_id)
+        if(configObj.discord.logs && configObj.discord.logs.chat_channel_id) discord.runChatLogging()
+        if(configObj.discord.logs && configObj.discord.logs.report_channel_id) discord.runReportLogging()
         built.push('discord')
     }
 
@@ -25,6 +26,9 @@ export async function bootstrap() : Promise<string[]>{
     }
 
 
+    /**
+     * bootstrap RCON
+     */
     if(configObj.rcon){
         const rcon = await new (await import('./controllers/rcon/RconController')).default()
         if(configObj.rcon.commands?.online) rcon.runOnlineCommand()

@@ -13,6 +13,16 @@ interface message{
     Stacktrace: string | null
 }
 
+export interface reportMessage{
+    PlayerId: string
+    PlayerName: string
+    TargetId: string
+    TargetName: string
+    Subject: string
+    Message: string
+    Type: string
+}
+
 export interface chatMessage{
     Channel: number
     Message: string
@@ -60,6 +70,7 @@ export namespace config{
     }
     interface logs{
         chat_channel_id: string | undefined
+        report_channel_id: string | undefined
     }
     interface players_online {
         chat_channel_id: string

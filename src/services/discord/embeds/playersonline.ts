@@ -39,11 +39,6 @@ async function _embedPlayersOnline(playerList: playerlist[], client : Client): P
     
     if(playerList.length > 0){
 
-        // TESTING
-        for(let i = 0; i<60; i++){
-            playerList.push(playerList[0])
-        }
-
         embeds = _buildMessageEmbeds(playerList)
         
     }
