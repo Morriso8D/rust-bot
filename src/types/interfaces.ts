@@ -67,6 +67,7 @@ export namespace config{
         guild_id: string
         players_online: players_online | undefined
         logs: logs | undefined
+        give_role_on_join: give_role_on_join | undefined
     }
     interface logs{
         chat_channel_id: string | undefined
@@ -74,5 +75,8 @@ export namespace config{
     }
     interface players_online {
         chat_channel_id: string
+    }
+    interface give_role_on_join {
+        role_name: string
     }
 }
