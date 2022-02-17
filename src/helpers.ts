@@ -1,3 +1,4 @@
+import { Pool } from "mysql"
 import { chatMessage, reportMessage } from "./types/interfaces"
 
 export function isRconObject(message: any) : message is object{
@@ -28,5 +29,11 @@ export function isRconReportMessage(message: any) : message is reportMessage{
         message.TargetName && message.Subject && 
         message.Message && message.Type) return true
 
+    return false
+}
+
+export function isMysqlConnected(conn: any) : conn is Pool{
+    if(typeof (conn as Pool)?.config !== 'undefined') return true
+    console.error(new Error('received mysql conn of undefined'))
     return false
 }

@@ -1,22 +1,26 @@
-import { createPool } from 'mysql'
+import { createPool, Pool } from 'mysql'
 import WaitPort from 'wait-port'
 
-let instance : Mysql | undefined
+let instance : Mysql
 
 class Mysql{
 
+    public conn: Pool | undefined
+
     public constructor(){
-        this.init().then(() => {
-            console.log('db built')
-        })
     }
 
-    public static singleton() : Mysql {
-        if(!instance) instance = new Mysql
-        return instance
+    public static async singleton() {
+            if(!instance){
+                instance = new Mysql()
+                await instance.init()
+                return instance
+            }
+    
+            return instance
     }
 
-    public async init() : Promise<void>{
+    private async init() : Promise<void>{
         const   host = process.env.MYSQL_HOST,
                 user = process.env.MYSQL_USER,
                 password = process.env.MYSQL_PASSWORD,
@@ -24,7 +28,7 @@ class Mysql{
 
         await WaitPort({host, port : 3306})
 
-        const pool = createPool({
+        this.conn = createPool({
             connectionLimit: 5,
             host,
             user,
@@ -33,15 +37,30 @@ class Mysql{
         })
 
         return new Promise((acc, rej) => {
-            pool.query(
-                'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean)',
+
+            if(!this.conn) return rej(new Error('received mysql conn of undefined'))
+
+            this.conn.query(
+                'CREATE TABLE IF NOT EXISTS kit_logs (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, user_id int, kit_id int, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)',
                 err => {
-                    if (err) return rej(err);
-    
+                    if (err) return rej(err)
+                },
+            )
+            this.conn.query(
+                'CREATE TABLE IF NOT EXISTS users (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, discord_id varchar(60) UNIQUE, username varchar(60), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)',
+                err => {
+                    if(err) return rej(err)
+                }
+            )
+            this.conn.query(
+                'CREATE TABLE IF NOT EXISTS kits (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, name varchar(30), items varchar(120), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)',
+                err => {
+                    if(err) return rej(err)
+
                     console.log(`Connected to mysql db at host ${host}`);
                     acc();
-                },
-            );
+                }
+            )
         });
     }
 }

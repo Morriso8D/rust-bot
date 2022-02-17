@@ -1,11 +1,7 @@
 import "reflect-metadata"
-import { EmbedFieldData, Intents, Interaction, Message, MessageEmbed } from "discord.js"
+import { Intents, Interaction, Message } from "discord.js"
 import { Client } from 'discordx'
 import { importx } from "@discordx/importer";
-import * as config from "@/config.json"
-import { config as configJson, playerlist } from '@/types/interfaces'
-import Rcon from "@/services/rcon/Rcon";
-import { isRconObject, isRconUndefined } from "@/helpers";
 
 let instance : Discord | undefined
 
@@ -16,7 +12,6 @@ class Discord{
 
     constructor(){
         this.token = process.env.DISCORD_TOKEN
-        // this.bindEvents()
         this.importDependencies()
         this.connect()
     }
@@ -40,22 +35,33 @@ class Discord{
               Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
               Intents.FLAGS.GUILD_VOICE_STATES,
             ],
-            silent: false
+            // If you only want to use global commands only, comment this line
+            botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
         });
 
         this.client.once('ready', async (client) => {
+
+            if(!this.client){
+                console.error(new Error('received discord client of undefined'))
+                return
+            }
+
             // make sure all guilds are in cache
-            await this.client?.guilds.fetch()
+            await this.client.guilds.fetch()
 
             // init all application commands
-            await this.client?.initApplicationCommands()
+            await this.client.initApplicationCommands({
+                guild: { log: true },
+                global: { log: true },
+            })
 
             // init permissions; enabled log to see changes
-            await this.client?.initApplicationPermissions()
+            await this.client.initApplicationPermissions(true)
 
             console.log('>> Discord started')
         })
-
+        
+        this.bindEvents()
         this.client.login(this.token)
     }
 
@@ -65,9 +71,15 @@ class Discord{
 
     private bindEvents(){
         if(!this.client){
-            console.error(new Error('client isnt undefined'))
+            console.error(new Error('recieved discord client of undefined'))
             return
         }
+        this.client.on('interactionCreate', (interaction: Interaction) => {
+            this.client?.executeInteraction(interaction)
+        })
+        this.client.on("messageCreate", (message: Message) => {
+            this.client?.executeCommand(message);
+        });
     }
 
     public getClient() : Client | undefined {

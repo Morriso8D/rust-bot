@@ -80,3 +80,15 @@ export namespace config{
         role_name: string
     }
 }
+
+export namespace database{
+    export interface kitLogs{
+        RowDataPacket : {
+            id: number
+            user_id: number
+            kit_id: number
+            created_at: string
+            updated_at: string
+        }
+    }
+}
