@@ -32,8 +32,8 @@ class NextWipe extends Command{
         
         this.lastUse = new Date().getTime()
         const configObj : configJson.json = Object(config),
-        nextWipe = this.nextWipe(configObj.rcon!.commands!.wipe!.day_of_the_week!),
-        daysRemaining = this.daysRemaining(configObj.rcon!.commands!.wipe!.day_of_the_week!),
+        nextWipe = this.nextWipe(configObj.wipe_day!),
+        daysRemaining = this.daysRemaining(configObj.wipe_day!),
         plural = (daysRemaining !== 1) ? "s" : "",
         date = String(nextWipe.getDate()).padStart(2, '0'),
         month = String(nextWipe.getMonth() + 1).padStart(2, '0')

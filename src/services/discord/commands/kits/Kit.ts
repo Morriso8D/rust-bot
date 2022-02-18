@@ -1,5 +1,4 @@
 import KitLogs from '@/models/KitLogs'
-import dayjs from 'dayjs'
 
 abstract class Kit{
 

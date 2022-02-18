@@ -14,7 +14,7 @@ class KitLogs extends Model{
         this.users = new Users()
     }
 
-    public getLastUse(discordId : string, kit : string) : Promise<database.kitLogs[]>{
+    public getLastUse(discordId : string, kit : string) : Promise<[database.kitLogs]>{
         return new Promise( (resolve, reject) => {
             if(!isMysqlConnected(this.conn)) return reject()
             this.conn.query('SELECT kl.* from kit_logs as kl LEFT JOIN users as u ON u.discord_id = ? LEFT JOIN kits as k ON k.name = ? WHERE kl.user_id = u.id AND kl.kit_id = k.id ORDER BY kl.updated_at DESC LIMIT 1', 

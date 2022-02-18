@@ -51,6 +51,7 @@ export namespace config{
         discord: discord | undefined
         cli: boolean | undefined
         rcon: rcon | undefined
+        wipe_day: number | undefined
     }
 
     interface rcon{
@@ -58,10 +59,7 @@ export namespace config{
     }
     interface commands{
         online: boolean | undefined
-        wipe: wipe | undefined
-    }
-    interface wipe{
-        day_of_the_week: number | undefined
+        wipe: boolean | undefined
     }
     interface discord{
         guild_id: string
@@ -83,12 +81,10 @@ export namespace config{
 
 export namespace database{
     export interface kitLogs{
-        RowDataPacket : {
-            id: number
-            user_id: number
-            kit_id: number
-            created_at: string
-            updated_at: string
-        }
+        id: number
+        user_id: number
+        kit_id: number
+        created_at: string
+        updated_at: string
     }
 }

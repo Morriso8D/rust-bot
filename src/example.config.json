@@ -12,9 +12,8 @@
     "rcon": {
         "commands": {
             "online": true,
-            "wipe": {
-                "day_of_the_week": 3
-            }
+            "wipe": true
         }
-    }
+    },
+    "wipe_day": 3
 }
