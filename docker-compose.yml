@@ -24,6 +24,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: rust
+  
+  redis:
+    image: redis:alpine
 
 volumes:
   rust-mysql-data:

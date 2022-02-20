@@ -86,5 +86,6 @@ export namespace database{
         kit_id: number
         created_at: string
         updated_at: string
+        name: string
     }
 }
