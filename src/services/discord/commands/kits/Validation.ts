@@ -3,7 +3,7 @@ import dayjs from "dayjs"
 import * as config from "@/config.json"
 import { config as configJson, database } from '@/types/interfaces'
 
-const kitLogs = new KitLogs
+const kitLogs = new KitLogs()
 
 export async function validateLastUse(discordId : string, kit : string) : Promise<boolean> {
     const row = (await kitLogs.getLastUse(discordId, kit))

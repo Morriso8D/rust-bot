@@ -40,7 +40,8 @@ export function isMysqlConnected(conn: any) : conn is Pool{
 }
 
 export function isRedisConnected(client: any) : client is RedisClientType<any>{
-    if(typeof (client as RedisClientType<any>)?.CLIENT_GETNAME !== 'undefined') return true
+    // if(typeof (client as RedisClientType<any>)?.CLIENT_GETNAME !== 'undefined') return true
+    if(typeof client !== 'undefined') return true
     console.error(new Error('received redis client of undefined'))
     return false
 }

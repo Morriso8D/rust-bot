@@ -57,7 +57,7 @@ class Mysql{
                 err => {
                     if(err) return rej(err)
 
-                    console.log(`Connected to mysql db at host ${host}`);
+                    console.log(`Connected to MySQL DB at host ${host}`);
                     acc();
                 }
             )

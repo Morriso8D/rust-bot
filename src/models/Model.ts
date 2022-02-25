@@ -8,14 +8,17 @@ abstract class Model{
     protected conn: Pool | undefined
     protected abstract table: string
 
-    constructor() {
-       this.init()
+    constructor(){
+        this.init()
     }
 
-    private init(){
-        Mysql.singleton().then((mysql) => {
-            this.conn = mysql.conn
-        }).catch(error => {console.error(error)})
+    public init() : Promise<void>{
+        return new Promise((acc, rej) => {
+            Mysql.singleton().then((mysql) => {
+                this.conn = mysql.conn
+                acc()
+            }).catch(error => {console.error(error)})
+        })
     }
 
     public getAll() : Promise<unknown>{

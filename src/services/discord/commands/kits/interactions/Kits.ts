@@ -1,10 +1,10 @@
-import Rcon from "@/services/rcon/Rcon";
+import CommandStore from "@/models/Store/CommandStore";
 import { CommandInteraction, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
 import { Discord, SelectMenuComponent, Slash } from "discordx";
 import { buildInvalidWeeklyUsage, buildPlayerlistMenuOptions, getPlayerlist } from "../Common";
 import { validateLastUse } from "../Validation";
 
-const rcon = Rcon.singleton()
+const commandStore = new CommandStore()
 
 @Discord()
 class Kits {
@@ -34,14 +34,13 @@ class Kits {
 
         if(!selectedKit) return await interaction.followUp('invalid kit, please try again')
 
-        // validate kit usage
-        if(!(await validateLastUse(interaction.user.id, selectedKit))) return interaction.editReply({embeds: [buildInvalidWeeklyUsage()]})
-
         const playerlist = await getPlayerlist()
 
         if( !playerlist || playerlist.length === 0){
             return interaction.editReply('Oops! Looks like no one\'s online right now')
         }
+
+        await commandStore.saveSelectedKit(interaction.user.id, selectedKit)
 
         const row = buildPlayerlistMenuOptions(playerlist)
                 

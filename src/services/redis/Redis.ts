@@ -33,10 +33,11 @@ class Redis{
                 this.bindHandlers()
 
                 await this.client.connect()
+                console.log('Redis Connected!')
                 acc()
 
             } catch (err) {
-                rej(err)
+                console.error(err)
             }
         })
     }

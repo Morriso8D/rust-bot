@@ -3,13 +3,10 @@ import {
     SelectMenuInteraction,
 } from "discord.js"
 import { ButtonComponent, Discord, SelectMenuComponent } from "discordx"
-import Rcon from '@/services/rcon/Rcon'
-import { playerlist } from "@/types/interfaces"
 import { buildButtonConfirmation, buildKitEmbedConfirmation, getPlayerlist } from "../Common"
-import { validateLastUse } from "../Validation"
+import CommandStore from "@/models/Store/CommandStore"
 
-const rcon = Rcon.singleton()
-
+let commandStore = new CommandStore()
 
 @Discord()
 class PlayerlistMenu{
@@ -33,24 +30,12 @@ class PlayerlistMenu{
 
         if(!playerName) return interaction.followUp('invalid player selection, try again')
 
+        commandStore.saveSelectedPlayer(playerName, interaction.user.id)
+
         const embed = buildKitEmbedConfirmation(playerName)
         
         const row = buildButtonConfirmation()
 
         interaction.editReply({embeds: [embed], components: [row]})
-    }
-
-    @ButtonComponent('kit-yes-btn')
-    async handleYesBtn(interaction: ButtonInteraction){
-        /**
-         * TODO:
-         * - fetch selectedKit from redis
-         */
-        // validate kit usage
-        // if(!(await validateLastUse(interaction.user.id, selectedKit))) return interaction.editReply({embeds: [buildInvalidWeeklyUsage()]})
-
-        
-        
-        interaction.reply(`📦 ${interaction.member} just redeemed a kit!`)
     }
 }

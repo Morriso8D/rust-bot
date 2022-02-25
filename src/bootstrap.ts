@@ -1,10 +1,25 @@
 import * as config  from './config.json'
+import Mysql from './services/mysql/Mysql'
+import Redis from './services/redis/Redis'
 import { config as configJson } from './types/interfaces'
 
 export async function bootstrap() : Promise<string[]>{
     
     const configObj : configJson.json = Object(config)
     let built: string[] = []
+
+    /**
+     * bootstrap Redis
+     */
+    await Redis.singleton()
+    built.push('Redis')
+
+
+    /**
+     * bootstrap MySQL
+     */
+    await Mysql.singleton()
+    built.push('MySQL')
 
     /**
      * bootstrap discord
@@ -14,7 +29,7 @@ export async function bootstrap() : Promise<string[]>{
         if(configObj.discord.players_online) discord.runPlayersOnline()
         if(configObj.discord.logs && configObj.discord.logs.chat_channel_id) discord.runChatLogging()
         if(configObj.discord.logs && configObj.discord.logs.report_channel_id) discord.runReportLogging()
-        built.push('discord')
+        built.push('Discord')
     }
 
     /**

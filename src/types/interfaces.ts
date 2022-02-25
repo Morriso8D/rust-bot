@@ -88,4 +88,11 @@ export namespace database{
         updated_at: string
         name: string
     }
+    export interface kit{
+        id: number
+        name: string
+        items: string
+        created_at: string
+        updated_at: string
+    }
 }

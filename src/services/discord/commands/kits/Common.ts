@@ -46,13 +46,15 @@ export function buildButtonConfirmation() : MessageActionRow {
 }
 
 export async function getPlayerlist() : Promise<playerlist[] | undefined>{
-    const playerlist = await rcon.sendAsync('playerlist', 29)
-
-        if(isRconUndefined(playerlist)) return
-        if(!isRconObject(playerlist)) return
-
         try {
+            
+            const playerlist = await rcon.sendAsync('playerlist', 29)
+
+            if(isRconUndefined(playerlist)) return
+            if(!isRconObject(playerlist)) return
+
             return JSON.parse(playerlist.Message)
+
         } catch (error) {
             console.error(error)
         }
