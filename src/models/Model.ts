@@ -13,11 +13,10 @@ abstract class Model{
     }
 
     public init() : Promise<void>{
-        return new Promise((acc, rej) => {
-            Mysql.singleton().then((mysql) => {
-                this.conn = mysql.conn
-                acc()
-            }).catch(error => {console.error(error)})
+        return new Promise(async(acc, rej) => {
+            const mysql = await Mysql.singleton()
+            this.conn = mysql.conn
+            acc()
         })
     }
 

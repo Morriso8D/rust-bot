@@ -1,6 +1,6 @@
 import * as config  from './config.json'
-import Mysql from './services/mysql/Mysql'
-import Redis from './services/redis/Redis'
+import Mysql from '@/services/mysql/Mysql'
+import Redis from '@/services/redis/Redis'
 import { config as configJson } from './types/interfaces'
 
 export async function bootstrap() : Promise<string[]>{

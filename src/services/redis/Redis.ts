@@ -2,23 +2,23 @@ import WaitPort from 'wait-port'
 import { createClient, RedisClientType } from 'redis'
 import { isRedisConnected } from '@/helpers'
 
-let instance : Redis
 
 class Redis{
 
     private client: RedisClientType<any> | undefined
 
-    public constructor(){
+    private static instance: Redis
+
+    private constructor(){
     }
 
     public static async singleton() {
-            if(!instance){
-                instance = new Redis()
-                await instance.init()
-                return instance
+            if(!Redis.instance){
+                Redis.instance = new Redis()
+                await Redis.instance.init()
             }
     
-            return instance
+            return Redis.instance
     }
 
     private async init() : Promise<void>{

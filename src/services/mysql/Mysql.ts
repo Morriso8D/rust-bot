@@ -1,23 +1,24 @@
 import { createPool, Pool } from 'mysql'
 import WaitPort from 'wait-port'
 
-let instance : Mysql
-
 class Mysql{
 
     public conn: Pool | undefined
 
-    public constructor(){
+    private static instance : Mysql
+
+    private constructor(){
+        
     }
 
     public static async singleton() {
-            if(!instance){
-                instance = new Mysql()
-                await instance.init()
-                return instance
+
+            if(!Mysql.instance){
+                Mysql.instance = new Mysql()
+                await Mysql.instance.init()
             }
     
-            return instance
+            return Mysql.instance
     }
 
     private async init() : Promise<void>{

@@ -3,22 +3,21 @@ import { Intents, Interaction, Message } from "discord.js"
 import { Client } from 'discordx'
 import { importx } from "@discordx/importer";
 
-let instance : Discord | undefined
-
 class Discord{
 
     private client : Client | undefined
     private token : string | undefined
+    private static instance : Discord
 
-    constructor(){
+    private constructor(){
         this.token = process.env.DISCORD_TOKEN
         this.importDependencies()
         this.connect()
     }
 
     public static singleton() : Discord{
-        if(!instance) instance = new Discord
-        return instance
+        if(!Discord.instance) Discord.instance = new Discord
+        return Discord.instance
     }
 
     private connect(){
