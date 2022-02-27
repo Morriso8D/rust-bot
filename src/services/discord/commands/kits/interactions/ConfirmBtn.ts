@@ -18,7 +18,7 @@ class ConfirmBtn {
      
     @ButtonComponent('kit-yes-btn')
     async handleYesBtn(interaction: ButtonInteraction){
-        await interaction.deferReply({ephemeral: true})
+        await interaction.deferReply()
         
         const   selectedKit = await commandStore.getSelectedKit(interaction.user.id),
                 giveTo = await commandStore.getSelectedPlayer(interaction.user.id)
@@ -26,9 +26,13 @@ class ConfirmBtn {
         if(!selectedKit || !giveTo) return interaction.editReply({content: `🤔 something went wrong... Try again later`})
 
         // validate kit usage
+        // TODO:
+        // - make the returned embed dynamically change based on the validation period (weekly, daily etc)
         if(!(await validateLastUse(interaction.user.id, selectedKit))) return interaction.editReply({embeds: [buildInvalidWeeklyUsage()]})
 
         await kitLogs.saveKit(interaction.user.id, interaction.user.username, selectedKit)
+        // TODO:
+        // getWeekly() to be replaced with a dynamic function which isn't time-period specific
         const   kit = await kits.getWeekly(),
                 items = kit[0].items.split(',')
 
@@ -39,12 +43,10 @@ class ConfirmBtn {
             response = await rcon.sendAsync(command, 212)
             if(isRconUndefined(response)) return
             if(!isRconObject(response)) return
-            const message = JSON.parse(response.Message)
+            console.log(response.Message)
             
-            if((message as string).indexOf('giving') !== -1) commandCount++
+            if(response.Message.indexOf('giving') !== -1) commandCount++
         })
-
-        console.log(commandCount)
 
         if(commandCount !== items.length) interaction.editReply(`🤔 something went wrong. Message an admin for help`)
         

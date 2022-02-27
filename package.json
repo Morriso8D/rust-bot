@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "typings": "./src/types/main.d.ts",
   "scripts": {
-    "start": "node -r ts-node/register -r tsconfig-paths/register -r dotenv/config dist/app.js",
+    "start": "node -L -r ts-node/register -r tsconfig-paths/register -r dotenv/config dist/app.js",
     "build": "tsc -p .",
     "dev": "nodemon -L -r tsconfig-paths/register -r dotenv/config src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

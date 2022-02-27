@@ -2,6 +2,7 @@ import KitLogs from "@/models/KitLogs"
 import dayjs from "dayjs"
 import * as config from "@/config.json"
 import { config as configJson, database } from '@/types/interfaces'
+import { nextWipe } from "@/helpers"
 
 const kitLogs = new KitLogs()
 
@@ -34,10 +35,10 @@ function validateWeekly(row : [database.kitLogs]){
         console.error(new Error('received config.wipe_day of undefined'))
         return false
     }
-    
-    const nextWipe = lastUse.day(configObj.wipe_day+7) // next wipe after using the kit
 
-    if(now.diff(nextWipe,'days') >= 0) return true
+    const nextwipe = nextWipe(configObj.wipe_day, lastUse.toString())
+
+    if(now.diff(nextwipe, 'days') >= 0) return true
 
     return false
 }

@@ -3,6 +3,7 @@ import { rconMessage, chatMessage } from "@/types/interfaces";
 import Command from "./Command";
 import * as config from "@/config.json"
 import { config as configJson } from '@/types/interfaces'
+import { nextWipe, WipeDaysRemaining } from '@/helpers'
 
 
 class NextWipe extends Command{
@@ -31,28 +32,14 @@ class NextWipe extends Command{
     public runCommand(): void {
         
         this.lastUse = new Date().getTime()
-        const configObj : configJson.json = Object(config),
-        nextWipe = this.nextWipe(configObj.wipe_day!),
-        daysRemaining = this.daysRemaining(configObj.wipe_day!),
-        plural = (daysRemaining !== 1) ? "s" : "",
-        date = String(nextWipe.getDate()).padStart(2, '0'),
-        month = String(nextWipe.getMonth() + 1).padStart(2, '0')
+        const   configObj : configJson.json = Object(config),
+                nextwipe = nextWipe(configObj.wipe_day!),
+                daysremaining = WipeDaysRemaining(configObj.wipe_day!),
+                plural = (daysremaining !== 1) ? "s" : "",
+                date = String(nextwipe.getDate()).padStart(2, '0'),
+                month = String(nextwipe.getMonth() + 1).padStart(2, '0')
 
-        this.rcon.send(`say next wipe is in: ${daysRemaining} day${plural} (${date}-${month})`)
-    }
-
-    private nextWipe(dayOfTheWeek: number) : Date{
-        const now = new Date(),
-        daysRemaining = this.daysRemaining(dayOfTheWeek)
-
-        now.setDate(now.getDate() + daysRemaining)
-        return now;
-    }
-
-    private daysRemaining(dayOfTheWeek: number) : number{
-        const now = new Date()
-
-        return (((dayOfTheWeek + 7 - now.getDay()) % 7) || 7)
+        this.rcon.send(`say next wipe is in: ${daysremaining} day${plural} (${date}-${month})`)
     }
 }
 

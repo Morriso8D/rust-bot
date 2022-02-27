@@ -45,3 +45,24 @@ export function isRedisConnected(client: any) : client is RedisClientType<any>{
     console.error(new Error('received redis client of undefined'))
     return false
 }
+
+export function WipeDaysRemaining(dayOfTheWeek: number, from : string | null = null) : number{
+   let date
+
+   if(from) date = new Date(from)
+   else date = new Date()
+
+    return (((dayOfTheWeek + 7 - date.getDay()) % 7) || 7)
+}
+
+export function nextWipe(dayOfTheWeek: number, from : string | null = null) : Date{
+    let date
+
+    if(from) date = new Date(from)
+    else date = new Date()
+
+    const remainingDays = WipeDaysRemaining(dayOfTheWeek, from)
+
+    date.setDate(date.getDate() + remainingDays)
+    return date;
+}
