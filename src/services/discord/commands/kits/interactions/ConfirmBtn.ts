@@ -50,6 +50,6 @@ class ConfirmBtn {
 
         if(commandCount !== items.length) interaction.editReply(`🤔 something went wrong. Message an admin for help`)
         
-        interaction.editReply(`📦 ${interaction.member} just redeemed a kit!`)
+        interaction.editReply(`📦 ${interaction.member} just redeemed a kit using \`/kits\``)
     }
 }
