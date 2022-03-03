@@ -2,14 +2,14 @@ import { isRconObject } from '@/helpers'
 import Rcon from '@/services/rcon/Rcon'
 import { createInterface, Interface } from 'readline'
 
-let instance : Cli | undefined
 
 class Cli {
 
     private rcon : Rcon
+    private static instance : Cli
     private readLine : Interface | undefined
 
-    constructor(){
+    private constructor(){
         this.rcon = Rcon.singleton()
         this.readLine = createInterface({
             input: process.stdin,
@@ -19,9 +19,9 @@ class Cli {
     }
 
     static singleton(){
-        if(!instance) instance = new Cli
+        if(!Cli.instance) Cli.instance = new Cli
 
-        return instance
+        return Cli.instance
     }
 
     private bindEvents(){

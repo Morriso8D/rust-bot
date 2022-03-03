@@ -2,8 +2,6 @@ import { client, connection } from 'websocket'
 import { EventEmitter } from 'events'
 import { rconCommand, rconMessage } from '../../types/interfaces'
 
-let instance : Rcon | null
-
 interface message {
     Message: any
 }
@@ -16,13 +14,15 @@ interface Rcon {
 
 class Rcon extends EventEmitter{
 
+    private static instance : Rcon
+
     private rcon_ip : string | undefined
     private rcon_secret : string | undefined
     private rcon_port : string | undefined
     private websocket : client
     private connection : connection | undefined
 
-    constructor(){
+    private constructor(){
         super()
 
         this.rcon_ip = process.env.RCON_IP
@@ -37,13 +37,13 @@ class Rcon extends EventEmitter{
 
     static singleton() : Rcon {
         
-        if(!instance){
+        if(!Rcon.instance){
 
-            instance = new Rcon()
+            Rcon.instance = new Rcon()
 
         }
 
-        return instance
+        return Rcon.instance
 
     }
 

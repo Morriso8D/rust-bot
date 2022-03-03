@@ -1,3 +1,5 @@
+import { Pool } from "mysql"
+import { RedisClientType } from "redis"
 import { chatMessage, reportMessage } from "./types/interfaces"
 
 export function isRconObject(message: any) : message is object{
@@ -29,4 +31,38 @@ export function isRconReportMessage(message: any) : message is reportMessage{
         message.Message && message.Type) return true
 
     return false
+}
+
+export function isMysqlConnected(conn: any) : conn is Pool{
+    if(typeof (conn as Pool)?.config !== 'undefined') return true
+    console.error(new Error('received mysql conn of undefined'))
+    return false
+}
+
+export function isRedisConnected(client: any) : client is RedisClientType<any>{
+    // if(typeof (client as RedisClientType<any>)?.CLIENT_GETNAME !== 'undefined') return true
+    if(typeof client !== 'undefined') return true
+    console.error(new Error('received redis client of undefined'))
+    return false
+}
+
+export function WipeDaysRemaining(dayOfTheWeek: number, from : string | null = null) : number{
+   let date
+
+   if(from) date = new Date(from)
+   else date = new Date()
+
+    return (((dayOfTheWeek + 7 - date.getDay()) % 7) || 7)
+}
+
+export function nextWipe(dayOfTheWeek: number, from : string | null = null) : Date{
+    let date
+
+    if(from) date = new Date(from)
+    else date = new Date()
+
+    const remainingDays = WipeDaysRemaining(dayOfTheWeek, from)
+
+    date.setDate(date.getDate() + remainingDays)
+    return date;
 }

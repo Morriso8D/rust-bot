@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2019",
     "module": "commonjs",
     "outDir": "./dist",
     "resolveJsonModule": true,                        /* Enable importing .json files */
@@ -16,9 +16,9 @@
     /* Advanced Options */
     "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [

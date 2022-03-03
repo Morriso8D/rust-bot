@@ -1,6 +1,6 @@
 import { bootstrap } from './bootstrap'
 
 bootstrap().then( (data) => {
-    const built = data.join(', ')
-    console.log(`running: ${built}`)
+    const built = data.join('\n>> ')
+    console.log(`running: \n>> ${built}`)
 })

@@ -6,28 +6,33 @@
   "typings": "./src/types/main.d.ts",
   "scripts": {
     "start": "tsc && node -r ts-node/register -r tsconfig-paths/register -r dotenv/config dist/app.js",
-    "dev": "nodemon -r tsconfig-paths/register -r dotenv/config src/app.ts",
+    "dev": "nodemon -L -r tsconfig-paths/register -r dotenv/config src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@discordx/changelog": "^2.0.6",
-    "nodemon": "^2.0.15",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "@discordx/changelog": "^2.0.7",
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
     "@discordx/importer": "^1.1.2",
     "@discordx/pagination": "^1.1.0",
     "@discordx/utilities": "^3.3.0",
+    "@types/mysql": "^2.15.21",
     "@types/websocket": "^1.0.4",
+    "dayjs": "^1.10.7",
     "discord.js": "^13.5.0",
     "discordx": "^9.1.9",
     "dotenv": "^10.0.0",
+    "mysql": "^2.18.1",
+    "redis": "^4.0.3",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.12.0",
+    "typescript": "^4.5.5",
+    "wait-port": "^0.2.9",
     "websocket": "^1.0.34"
   },
   "engines": {

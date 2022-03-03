@@ -51,6 +51,7 @@ export namespace config{
         discord: discord | undefined
         cli: boolean | undefined
         rcon: rcon | undefined
+        wipe_day: number | undefined
     }
 
     interface rcon{
@@ -58,10 +59,7 @@ export namespace config{
     }
     interface commands{
         online: boolean | undefined
-        wipe: wipe | undefined
-    }
-    interface wipe{
-        day_of_the_week: number | undefined
+        wipe: boolean | undefined
     }
     interface discord{
         guild_id: string
@@ -78,5 +76,23 @@ export namespace config{
     }
     interface give_role_on_join {
         role_name: string
+    }
+}
+
+export namespace database{
+    export interface kitLogs{
+        id: number
+        user_id: number
+        kit_id: number
+        created_at: string
+        updated_at: string
+        name: string
+    }
+    export interface kit{
+        id: number
+        name: string
+        items: string
+        created_at: string
+        updated_at: string
     }
 }
