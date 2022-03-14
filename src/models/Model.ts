@@ -20,10 +20,10 @@ abstract class Model{
         })
     }
 
-    public getAll() : Promise<unknown>{
+    public getAll() : Promise<unknown[] | unknown>{
         return new Promise((resolve, reject) => {
             if(!isMysqlConnected(this.conn)) return reject()
-            this.conn.query('SELECT * FROM ?', [this.table], (error, results) => {
+            this.conn.query(`SELECT * FROM ${this.table}`, (error, results) => {
                 if(error) reject(error)
 
                 resolve(results)

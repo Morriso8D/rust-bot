@@ -54,7 +54,13 @@ class Mysql{
                 }
             )
             this.conn.query(
-                'CREATE TABLE IF NOT EXISTS kits (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, name varchar(30), items varchar(120), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)',
+                'CREATE TABLE IF NOT EXISTS kit_items (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, kit_id int, item varchar(30), quantity int, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)',
+                err => {
+                    if(err) return rej(err)
+                }
+            )
+            this.conn.query(
+                'CREATE TABLE IF NOT EXISTS kits (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, name varchar(120) UNIQUE, `usage` int, description varchar(120), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)',
                 err => {
                     if(err) return rej(err)
 

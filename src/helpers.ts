@@ -1,6 +1,6 @@
 import { Pool } from "mysql"
 import { RedisClientType } from "redis"
-import { chatMessage, reportMessage } from "./types/interfaces"
+import { database, reportMessage } from "./types/interfaces"
 
 export function isRconObject(message: any) : message is object{
     if(typeof message === 'object') return true
@@ -36,6 +36,31 @@ export function isRconReportMessage(message: any) : message is reportMessage{
 export function isMysqlConnected(conn: any) : conn is Pool{
     if(typeof (conn as Pool)?.config !== 'undefined') return true
     console.error(new Error('received mysql conn of undefined'))
+    return false
+}
+
+export function isMysqlAlteredResponse(response: any) : response is database.alteredResponse{
+    if(typeof (response as database.alteredResponse)?.affectedRows !== 'undefined') return true
+    return false
+}
+
+export function isMysqlKitResponse(response: any) : response is database.kit[]{
+    if(typeof(response[0] as database.kit)?.name !== 'undefined') return true
+    return false
+}
+
+export function isMysqlKitWithItemResponse(response: any) : response is database.kitWithItem[]{
+    if(typeof(response[0] as database.kitWithItem)?.item !== 'undefined') return true
+    return false
+}
+
+export function isGroupedKitWithItems(response: any) : response is database.groupedKitWithItems[]{
+    if(typeof(response[0] as database.groupedKitWithItems)?.items !== 'undefined') return true
+    return false
+}
+
+export function isMysqlKitExistsResponse(response: any) : response is database.kitCount{
+    if(typeof(response as database.kitCount)?.kit_count !== 'undefined') return true
     return false
 }
 

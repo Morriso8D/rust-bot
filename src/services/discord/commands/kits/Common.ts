@@ -1,5 +1,5 @@
 import { playerlist } from "@/types/interfaces"
-import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, MessageSelectOptionData } from "discord.js"
+import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from "discord.js"
 import Rcon from '@/services/rcon/Rcon'
 import { isRconObject, isRconUndefined } from "@/helpers"
 import KitLogs from "@/models/KitLogs"

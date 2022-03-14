@@ -1,6 +1,6 @@
 import { isDiscordClientUndefined, isRconObject } from "@/helpers"
 import Discord from "@/services/discord/Discord"
-import { setupPlayersOnline } from "@/services/discord/embeds/playersonline"
+import { setupPlayersOnline } from "@/services/discord/embeds/PlayersOnline"
 import Reports from "@/services/discord/logging/Reports"
 import Rcon from "@/services/rcon/Rcon"
 

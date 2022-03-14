@@ -1,28 +1,36 @@
-import CommandStore from "@/models/Store/CommandStore";
-import { CommandInteraction, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
-import { Discord, SelectMenuComponent, Slash } from "discordx";
-import { buildInvalidWeeklyUsage, buildPlayerlistMenuOptions, getPlayerlist } from "../Common";
-import { validateLastUse } from "../Validation";
+import { isMysqlKitResponse } from "@/helpers"
+import Kits from "@/models/Kits"
+import CommandStore from "@/models/Store/CommandStore"
+import { CommandInteraction, MessageActionRow, MessageSelectMenu, MessageSelectOptionData, SelectMenuInteraction } from "discord.js"
+import { Discord, SelectMenuComponent, Slash } from "discordx"
+import { buildPlayerlistMenuOptions, getPlayerlist } from "../Common"
 
 const commandStore = new CommandStore()
 
 @Discord()
-class Kits {
+class KitsInteraction {
 
-    @Slash('kits')
-    async kits(interaction: CommandInteraction){
-        await interaction.deferReply({ephemeral: true})
+    private kits = new Kits()
 
-        const menuOptions = this.buildKitsMenuOptions(),
-        row = new MessageActionRow()
-            .addComponents(
-                new MessageSelectMenu()
-                    .setCustomId('kits-menu')
-                    .setPlaceholder('No kit selected')
-                    .addOptions(menuOptions)
-            )
+    @Slash('kits', {description: 'Redeem a kit'})
+    async handleKits(interaction: CommandInteraction){
+        try {
+            await interaction.deferReply({ephemeral: true})
+            const menuOptions = await this.buildKitsMenuOptions(),
+            row = new MessageActionRow()
+                .addComponents(
+                    new MessageSelectMenu()
+                        .setCustomId('kits-menu')
+                        .setPlaceholder('No kit selected')
+                        .addOptions(menuOptions)
+                )
         
-        interaction.editReply({content: 'Select a kit', components: [row]})
+            interaction.editReply({content: 'Select a kit', components: [row]})
+            
+        } catch (error) {
+            console.log(error)
+            interaction.editReply(`💀 oops! Something went wrong`)
+        }
     }
 
     @SelectMenuComponent('kits-menu')
@@ -47,13 +55,17 @@ class Kits {
         interaction.editReply({content: 'Who should receive the kit?', components: [row]})
     }
 
-    private buildKitsMenuOptions() : MessageSelectOptionData[]{
-        return [
-            {
-                label: 'Weekly',
-                value: 'weekly',
-                description: 'A primitive weekly wipe kit'
+    private async buildKitsMenuOptions() : Promise<MessageSelectOptionData[]>{
+
+        const kits = await this.kits.getAll()
+        if(!isMysqlKitResponse(kits)) throw new Error('Invalid mysql response')
+
+        return kits.map(kit=>{
+            return {
+                label: kit.name,
+                value: kit.name,
+                description: kit.description
             }
-        ]
+        })
     }
 }

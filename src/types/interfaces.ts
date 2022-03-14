@@ -63,6 +63,7 @@ export namespace config{
     }
     interface discord{
         guild_id: string
+        kit_manager_role_id: string | undefined
         players_online: players_online | undefined
         logs: logs | undefined
         give_role_on_join: give_role_on_join | undefined
@@ -79,6 +80,16 @@ export namespace config{
     }
 }
 
+export namespace itemList{
+    export interface json{
+        "Display Name": string
+        "Short Name": string
+        "Item ID": number
+        Description: string
+        Stacksize: number
+    }
+}
+
 export namespace database{
     export interface kitLogs{
         id: number
@@ -91,8 +102,33 @@ export namespace database{
     export interface kit{
         id: number
         name: string
-        items: string
+        usage: number
+        description: string
         created_at: string
         updated_at: string
+    }
+    export interface kitWithItem extends kit{
+        item: string
+        quantity: number
+    }
+    export interface groupedKitWithItems extends kit{
+        items: mappedItem[]
+    }
+    export interface mappedItem{
+        item: string
+        quantity: number
+    }
+    export interface alteredResponse{
+        fieldCount: number
+        affectedRows: number
+        insertId: number
+        serverStatus: number
+        warningCount: number
+        message: string
+        protocol41: boolean
+        changedRows: number
+    }
+    export interface kitCount{
+        kit_count: number
     }
 }
