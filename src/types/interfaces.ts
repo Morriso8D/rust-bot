@@ -98,6 +98,7 @@ export namespace database{
         created_at: string
         updated_at: string
         name: string
+        usage: number
     }
     export interface kit{
         id: number

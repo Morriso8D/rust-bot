@@ -1,11 +1,9 @@
 import { playerlist } from "@/types/interfaces"
-import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from "discord.js"
+import { ButtonInteraction, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from "discord.js"
 import Rcon from '@/services/rcon/Rcon'
 import { isRconObject, isRconUndefined } from "@/helpers"
-import KitLogs from "@/models/KitLogs"
 
 const rcon = Rcon.singleton()
-const kitLogs = new KitLogs
 
 export function buildPlayerlistMenuOptions(jsonPlayerlist: playerlist[]) : MessageActionRow{
     const menuOptions = jsonPlayerlist.map((player) => {
@@ -17,14 +15,15 @@ export function buildPlayerlistMenuOptions(jsonPlayerlist: playerlist[]) : Messa
                 .setCustomId('kit-playerlist-menu')
                 .setPlaceholder('No player selected')
                 .addOptions(menuOptions)
-        )
+        ) 
 }
 
-export  function buildInvalidWeeklyUsage() : MessageEmbed{
+export  async function buildInvalidUsage(timeLeft: string, interaction : ButtonInteraction) : Promise<MessageEmbed>{
+
     return new MessageEmbed()
         .setColor('DARK_RED')
         .setTitle('Failed to redeem kit')
-        .setDescription("This kit can only be used once per map wipe")
+        .setDescription(`${interaction.member} this kit is available ${timeLeft}`)
 }
 
 export function buildKitEmbedConfirmation(playerName: string) : MessageEmbed{
@@ -58,8 +57,4 @@ export async function getPlayerlist() : Promise<playerlist[] | undefined>{
         } catch (error) {
             console.error(error)
         }
-}
-
-export async function saveKitLog(discordId : string, username: string, kit : string) : Promise<void> {
-    const update = (await kitLogs.saveKit(discordId, username, kit))
 }

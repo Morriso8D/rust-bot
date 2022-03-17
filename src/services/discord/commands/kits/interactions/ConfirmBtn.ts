@@ -4,7 +4,7 @@ import CommandStore from "@/models/Store/CommandStore";
 import Rcon from "@/services/rcon/Rcon";
 import { ButtonInteraction } from "discord.js";
 import { ButtonComponent, Discord } from "discordx";
-import { buildInvalidWeeklyUsage } from "../Common";
+import { buildInvalidUsage } from "../Common";
 import { validateLastUse } from "../Validation";
 
 const commandStore = new CommandStore()
@@ -26,10 +26,9 @@ class ConfirmBtn {
 
             if(!selectedKit || !giveTo) return interaction.editReply({content: `🤔 something went wrong... Try again later`})
 
-            // validate kit usage
-            // TODO:
-            // - make the returned embed dynamically change based on the validation period (weekly, daily etc)
-            if(!(await validateLastUse(interaction.user.id, selectedKit))) return interaction.editReply({embeds: [buildInvalidWeeklyUsage()]})
+            const validation = await validateLastUse(interaction.user.id, selectedKit)
+
+            if(validation.valid === false && validation.timeLeft) return interaction.editReply({embeds: [ await buildInvalidUsage(validation.timeLeft, interaction)]})
 
             await kitLogs.saveKit(interaction.user.id, interaction.user.username, selectedKit)
             
