@@ -1,10 +1,10 @@
 import { isRconObject } from "@/helpers";
 import { rconMessage, chatMessage } from "@/types/interfaces";
 import Command from "./Command";
-import * as config from "@/config.json"
-import { config as configJson } from '@/types/interfaces'
+import Config from '@/services/config/Config'
 import { nextWipe, WipeDaysRemaining } from '@/helpers'
 
+const config = Config.singleton()
 
 class NextWipe extends Command{
 
@@ -32,9 +32,14 @@ class NextWipe extends Command{
     public runCommand(): void {
         
         this.lastUse = new Date().getTime()
-        const   configObj : configJson.json = Object(config),
-                nextwipe = nextWipe(configObj.wipe_day!),
-                daysremaining = WipeDaysRemaining(configObj.wipe_day!),
+        const wipeDay = config.getWipeDay()
+        
+        if(!wipeDay){
+            console.error(new Error('received wipeDay of undefined'))
+            return
+        }
+        const   nextwipe = nextWipe(wipeDay),
+                daysremaining = WipeDaysRemaining(wipeDay),
                 plural = (daysremaining !== 1) ? "s" : "",
                 date = String(nextwipe.getDate()).padStart(2, '0'),
                 month = String(nextwipe.getMonth() + 1).padStart(2, '0')

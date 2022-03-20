@@ -1,22 +1,24 @@
 import type { ArgsOf } from "discordx";
 import { Discord, On, Client } from "discordx";
-import * as config  from '@/config.json'
-import { config as configJson } from '@/types/interfaces'
+import Config from '@/services/config/Config'
 
-const configObj : configJson.json = Object(config)
+const config = Config.singleton()
 
 @Discord()
 export abstract class AppDiscord {
   @On("messageDelete")
   onMessage([message]: ArgsOf<"messageDelete">, client: Client) {
-    console.log("Message Deleted", client.user?.username, message.content);
+    console.log("Message Deleted", client.user?.username, message.content)
   }
+  
   @On('guildMemberAdd')
   onMemberAdd([member]: ArgsOf<'guildMemberAdd'>, client: Client) {
-    if(!configObj.discord?.give_role_on_join) return
+    const roleName = config.getRoleNameOnGuildJoin()
 
-    const role = member.guild.roles.cache.find(role => role.name === configObj.discord?.give_role_on_join?.role_name)
+    if(!roleName) return
+
+    const role = member.guild.roles.cache.find(role => role.name === roleName)
     if(role) member.roles.add(role)
-    else console.error(new Error(`couldn't find role with name: ${configObj.discord?.give_role_on_join?.role_name}`))
+    else console.error(new Error(`couldn't find role with name: ${roleName}`))
   }
 }

@@ -1,28 +1,28 @@
 import Rcon from "@/services/rcon/Rcon"
 import { Client } from "discordx"
-import * as config from "@/config.json"
-import { config as configJson, playerlist } from '@/types/interfaces'
+import Config from '@/services/config/Config'
+import { playerlist } from '@/types/interfaces'
 import { isRconObject, isRconUndefined } from "@/helpers"
 import { EmbedFieldData, Message, MessageEmbed } from "discord.js"
 
 let embedMessage : Message | undefined
+const config = Config.singleton()
 
-async function _embedPlayersOnline(playerList: playerlist[], client : Client): Promise<void>{
+async function _embedPlayersOnline(playerList: playerlist[], client : Client, serverName : string): Promise<void>{
 
     if(!client){
         console.error(new Error('received client of undefined'))
         return
     }
 
-    const configObj : configJson.json = Object(config),
-        guild = client.guilds.cache.get(configObj.discord!.guild_id)
+    const guild = client.guilds.cache.get(config.getGuildId())
         
     if(!guild){
         console.error(new Error('received guild of undefined'))
         return
     }
 
-    const channel = guild.channels.cache.get(configObj.discord!.players_online!.chat_channel_id)
+    const channel = guild.channels.cache.get(config.getPlayersOnlineChannelId())
 
     if(!channel){
         console.error(new Error('received channel of undefined'))
@@ -39,13 +39,13 @@ async function _embedPlayersOnline(playerList: playerlist[], client : Client): P
     
     if(playerList.length > 0){
 
-        embeds = _buildMessageEmbeds(playerList)
+        embeds = _buildMessageEmbeds(playerList, serverName)
         
     }
 
     else embeds = [new MessageEmbed()
         .setColor('#00d26a')
-        .setTitle('EU Cronch | Vanilla | Solo Duo Trio')
+        .setTitle(serverName)
         .setDescription('Players Online:')
         .addField('No one\'s online', ':(')
         .setTimestamp()]
@@ -66,7 +66,7 @@ async function _embedPlayersOnline(playerList: playerlist[], client : Client): P
 
 }
 
-function _buildMessageEmbeds(playerList: playerlist[]) : MessageEmbed[]{
+function _buildMessageEmbeds(playerList: playerlist[], serverName: string) : MessageEmbed[]{
 
     // chunk fields into groups of 25
     const chunkedArray = playerList.reduce((resultArray: EmbedFieldData[][], item, index) => { 
@@ -85,7 +85,7 @@ function _buildMessageEmbeds(playerList: playerlist[]) : MessageEmbed[]{
         if(index === 0){
             return new MessageEmbed()
             .setColor('#00d26a')
-            .setTitle('EU Cronch | Vanilla | Solo Duo Trio')
+            .setTitle(serverName)
             .setDescription('Players online:')
             .addFields(chunk)
             .setFooter({text:`Page ${index + 1}`})
@@ -105,48 +105,57 @@ function _buildMessageEmbeds(playerList: playerlist[]) : MessageEmbed[]{
 
 export function setupPlayersOnline(client : Client) : void{
 
-    const configObj : configJson.json = Object(config)
-
     const rcon = Rcon.singleton()
 
     setInterval(async () => {
-        const playerlist = await rcon.sendAsync('playerlist', 255)
+        try {
 
-        if(isRconUndefined(playerlist)) return
-        if(!isRconObject(playerlist)) return
+            const playerlist = await rcon.sendAsync('playerlist', 255)
+            const servername = await rcon.sendAsync('server.hostname', 255)
 
-        const {Message} = playerlist
+            if(isRconUndefined(servername)) return
+            if(!isRconObject(servername)) return
+            if(isRconUndefined(playerlist)) return
+            if(!isRconObject(playerlist)) return
+
+            const {Message} = playerlist,
+                {Message: serverStringWithCommand } = servername,
+                serverString = serverStringWithCommand.split('server.hostname: "')[1].replace('"', '')
         
-        const jsonPlayerlist = JSON.parse(Message)
+            const jsonPlayerlist = JSON.parse(Message)
 
-        if(!client){
-            console.error('received client of undefined')
-            return
+            if(!client){
+                console.error('received client of undefined')
+                return
+            }
+
+            const guild = client.guilds.cache.get(config.getGuildId())
+
+            if(!guild){
+                console.error(new Error('received guild of undefined'))
+                return
+            }
+
+            const channel = guild.channels.cache.get(config.getPlayersOnlineChannelId())
+
+            if(!channel){
+                console.error(new Error('received channel of undefined'))
+                return
+            }
+
+            const date = new Date().toLocaleTimeString()
+
+            channel.edit({name: `🟢│${jsonPlayerlist.length}-online`, topic: `last updated: ${date}`}).then(()=>{
+                console.log(date,'>> playerlist updated')
+            }).catch((reason)=>{
+                console.error(reason)
+            })
+
+            _embedPlayersOnline(jsonPlayerlist, client, serverString)
+            
+        } catch (error) {
+            console.log(error)
         }
-
-        const guild = client.guilds.cache.get(config.discord.guild_id)
-
-        if(!guild){
-            console.error(new Error('received guild of undefined'))
-            return
-        }
-
-        const channel = guild.channels.cache.get(configObj.discord!.players_online!.chat_channel_id)
-
-        if(!channel){
-            console.error(new Error('received channel of undefined'))
-            return
-        }
-
-        const date = new Date().toLocaleTimeString()
-
-        channel.edit({name: `🟢│${jsonPlayerlist.length}-online`, topic: `last updated: ${date}`}).then(()=>{
-            console.log(date,'>> playerlist updated')
-        }).catch((reason)=>{
-            console.error(reason)
-        })
-
-        _embedPlayersOnline(jsonPlayerlist, client)
 
     }, (60000 * 5))
 }

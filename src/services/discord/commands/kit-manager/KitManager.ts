@@ -1,13 +1,12 @@
 import { CommandInteraction } from "discord.js"
 import { Discord, Permission, Slash, SlashChoice, SlashGroup, SlashOption } from "discordx"
-import { config as configJson } from '@/types/interfaces'
-import * as config  from '@/config.json'
+import Config from '@/services/config/Config'
 import Kits from "@/models/Kits"
 import { Pagination, PaginationType } from "@discordx/pagination"
 import { buildEmbedKits } from "./EmbedKits"
 
-const configObj : configJson.json = Object(config),
-    roleId = configObj.discord?.kit_manager_role_id ?? 'undefined'
+const   config = Config.singleton(),
+        roleId = config.getKitManagerRoleId()
 
 @Discord()
 @Permission(false)

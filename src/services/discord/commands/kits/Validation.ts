@@ -1,13 +1,14 @@
 import KitLogs from "@/models/KitLogs"
 import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from "dayjs"
-import * as config from "@/config.json"
-import { config as configJson, database } from '@/types/interfaces'
+import Config from '@/services/config/Config'
+import { database } from '@/types/interfaces'
 import { nextWipe } from "@/helpers"
 
 dayjs.extend(relativeTime)
 
-const kitLogs = new KitLogs()
+const   kitLogs = new KitLogs(),
+        config = Config.singleton()
 
 /**
  * 
@@ -51,14 +52,14 @@ function validateWeekly(row : [database.kitLogs]){
     const   created_at = row[0].created_at,
             lastUse = dayjs(created_at),
             now = dayjs(),
-            configObj : configJson.json = Object(config)
+            wipeDay = config.getWipeDay()
 
-    if(!configObj.wipe_day){
+    if(!wipeDay){
         console.error(new Error('received config.wipe_day of undefined'))
         return false
     }
 
-    const nextwipe = nextWipe(configObj.wipe_day, lastUse.toString())
+    const nextwipe = nextWipe(wipeDay, lastUse.toString())
 
     if(now.diff(nextwipe, 'days') >= 0) return true
 

@@ -2,9 +2,9 @@ import { isRconObject, isRconReportMessage } from "@/helpers";
 import { rconMessage, reportMessage } from "@/types/interfaces";
 import { GuildBasedChannel, MessageEmbed } from "discord.js";
 import { Client } from "discordx";
-import * as config from "@/config.json"
-import { config as configJson, playerlist } from '@/types/interfaces'
+import Config from '@/services/config/Config'
 
+const config = Config.singleton()
 
 class Reports{
 
@@ -58,15 +58,14 @@ class Reports{
             return
         }
 
-        const configObj : configJson.json = Object(config),
-        guild = client.guilds.cache.get(configObj.discord!.guild_id)
+        const guild = client.guilds.cache.get(config.getGuildId())
 
         if(!guild){
             console.error(new Error(`received guild of undefined`))
             return
         }
 
-        const channel = guild.channels.cache.get(configObj.discord!.logs!.report_channel_id!)
+        const channel = guild.channels.cache.get(config.getReportChannelId())
 
         if(!channel){
             console.error(new Error(`received channel of undefined`))
