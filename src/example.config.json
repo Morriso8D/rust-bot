@@ -1,18 +1,23 @@
 {
     "discord": {
         "guild_id":"929721864299876412",
+        "kit_manager_role_id": "938506729526792222",
         "logs": {
-            "chat_channel_id": "123456" 
+            "chat_channel_id": "123456",
+            "report_channel_id": "123456" 
         },
         "players_online": {
             "chat_channel_id": "929721938069307442"
+        },
+        "give_role_on_join": {
+            "role_name": "cronch"
         }
     },
-    "cli": true,
+    "cli": false,
     "rcon": {
         "commands": {
-            "online": true,
-            "wipe": true
+            "online": false,
+            "wipe": false
         }
     },
     "wipe_day": 3
