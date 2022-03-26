@@ -15,7 +15,7 @@ Rust Kit Manager is a discord bot which lets you (the server admin) create/manag
 * Kit timeouts (restrict how often a kit can be redeemed)
 * Guard admin commands behind a role
 * Log kit usage
-* Display players online as an embeded message (optional)
+* Display players online as an embedded message (optional)
 * Assign guild members a role on joining (optional)
 * Extra in-game commands, such as: !online and !wipe (optional)
 * Send RCON commands via CLI (optional)
