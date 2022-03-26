@@ -10,9 +10,10 @@ services:
       - 3000:3000
     volumes:
       - ./:/app
-      - ./node_modules:/app/node_modules
+      - /app/node_modules
       - ./nodemon.json:/app/nodemon.json
     environment:
+      NODE_ENV: dev
       MYSQL_HOST: mysql
       MYSQL_USER: root
       MYSQL_PASSWORD: secret
@@ -20,6 +21,9 @@ services:
       REDIS_HOST: redis
       REDIS_URL: redis://cache
       REDIS_PORT: 6379
+    depends_on:
+      - mysql
+      - redis
 
   mysql:
     image: mysql:5.7
