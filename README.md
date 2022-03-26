@@ -30,7 +30,7 @@ A simple discord bot which lets you (a Rust server admin) create/manage kits for
 2. Navigate to the project's root ``cd rust-bot``
 3. Rename the [example.env](./example.env) to '.env' ``mv example.env .env``
 4. Open the '.env' file and enter your server's rcon details and discord bot token ``vim .env``
-5. Rename [example.config.json](./src/example.config.json) to 'config.json' ''cd src && mv example.config.json config.json``
+5. Rename [example.config.json](./src/example.config.json) to 'config.json' ``cd src && mv example.config.json config.json``
 6. Open 'config.json' and configure the bots setup ``vim config.json``
 7. Navigate to the project's root and build the docker image ``cd ../ && docker build .`` (this may take a few minutes)
 8. Start the bot ``docker-compose -d up``
