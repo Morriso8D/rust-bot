@@ -5,6 +5,7 @@
     * [Features](#features)
     * [Prerequisites](#prerequisites)
     * [Installation](#installation)
+    * [Commands](#commands)
 
 ## About
     Rust Kit Manager is a discord bot which lets you (the server admin) create/manage kits for players to redeem via discord with slash-commands.
@@ -14,7 +15,7 @@
     * Kit timeouts (restrict how often a kit can be redeemed)
     * Guard admin commands behind a role
     * Log kit usage
-    * Display players online in realtime (optional)
+    * Display players online as an embeded message (optional)
     * Extra in-game commands, such as: !online and !wipe (optional)
     * Send RCON commands via CLI (optional)
 
@@ -32,3 +33,13 @@
     6. Open 'config.json' and configure the bots setup ``vim config.json``
     7. Navigate to the project's root and build the docker image ``cd ../ && docker build .`` (this may take a few minutes)
     8. Start the bot ``docker-compose -d up``
+
+## Commands
+| Commands             | What it does                                                                 | Dependencies                    |
+| -------------------- |:----------------------------------------------------------------------------:|:-------------------------------:|
+| ```/kits```          | Displays a select menu of redeemable kits                                    |                                 |
+| ```/kit-manager list``` | Paginated list of kits and their assigned items                           | User requires kit manager role  |
+| ```/kit-manager add``` | Create a new kit                                                           | User requires kit manager role  |
+| ```/kit-manager remove``` | Remove a kit                                                            | User requires kit manager role  |
+| ```/kit-manager item add``` | Add an item and its quantity to a kit                                 | User requires kit manager role  |
+| ```/kit-manager item remove``` | Remove an item from a kit                                          | User requires kit manager role  |
