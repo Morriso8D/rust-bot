@@ -8,7 +8,7 @@
 * [Commands](#commands)
 
 ## About
-A simple discord bot to create, manage and redeem in-game kits using slash-commands for Rust gaming servers.
+A simple discord bot to create, manage and redeem in-game kits using slash-commands for Rust gaming servers. Also includes a few optional features
 
 ## Features
 * Redeem and customise kits with slash-commands
