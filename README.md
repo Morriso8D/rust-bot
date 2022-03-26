@@ -14,8 +14,8 @@ A simple discord bot which lets you (a Rust server admin) create/manage kits for
 * Redeem and customise kits with slash-commands
 * Kit timeouts (restrict how often a kit can be redeemed)
 * Guard admin commands behind a role
-* Log kit usage
 * Display players online as an embedded message (optional)
+* Log player reports (optional)
 * Assign guild members a role on joining (optional)
 * Extra in-game commands, such as: !online and !wipe (optional)
 * Send RCON commands via CLI (optional)
