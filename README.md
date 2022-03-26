@@ -8,7 +8,7 @@
 * [Commands](#commands)
 
 ## About
-Rust Kit Manager is a discord bot which lets you (the server admin) create/manage kits for players to redeem via discord with slash-commands.
+A simple discord bot which lets you (a Rust server admin) create/manage kits for players to redeem via discord with slash-commands.
 
 ## Features
 * Redeem and customise kits with slash-commands
