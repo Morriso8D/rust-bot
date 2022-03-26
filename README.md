@@ -8,14 +8,14 @@
 * [Commands](#commands)
 
 ## About
-Rust Kit Manager is a discord bot which lets you (the server admin) create/manage kits for players to redeem via discord with slash-commands.
+A simple discord bot to create, manage and redeem in-game kits using slash-commands for Rust gaming servers. Also includes a few optional features
 
 ## Features
 * Redeem and customise kits with slash-commands
 * Kit timeouts (restrict how often a kit can be redeemed)
 * Guard admin commands behind a role
-* Log kit usage
 * Display players online as an embedded message (optional)
+* Log player reports (optional)
 * Assign guild members a role on joining (optional)
 * Extra in-game commands, such as: !online and !wipe (optional)
 * Send RCON commands via CLI (optional)
@@ -30,7 +30,7 @@ Rust Kit Manager is a discord bot which lets you (the server admin) create/manag
 2. Navigate to the project's root ``cd rust-bot``
 3. Rename the [example.env](./example.env) to '.env' ``mv example.env .env``
 4. Open the '.env' file and enter your server's rcon details and discord bot token ``vim .env``
-5. Rename [example.config.json](./src/example.config.json) to 'config.json' ''cd src && mv example.config.json config.json``
+5. Rename [example.config.json](./src/example.config.json) to 'config.json' ``cd src && mv example.config.json config.json``
 6. Open 'config.json' and configure the bots setup ``vim config.json``
 7. Navigate to the project's root and build the docker image ``cd ../ && docker build .`` (this may take a few minutes)
 8. Start the bot ``docker-compose -d up``
