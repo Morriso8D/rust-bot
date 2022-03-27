@@ -6,6 +6,7 @@
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Commands](#commands)
+* [Screenshots](#screenshots)
 
 ## About
 A simple discord bot to create, manage and redeem in-game kits using slash-commands for Rust gaming servers. Also includes a few optional features
@@ -44,3 +45,7 @@ A simple discord bot to create, manage and redeem in-game kits using slash-comma
 | ```/kit-manager remove``` | Remove a kit                                                            | User requires kit manager role  |
 | ```/kit-manager item add``` | Add an item and its quantity to a kit                                 | User requires kit manager role  |
 | ```/kit-manager item remove``` | Remove an item from a kit                                          | User requires kit manager role  |
+
+## Screenshots
+Using ```/kits``` to redeem a kit (initially displays a select menu of available kits)
+<img src="./screenshots/kits.png"/>
