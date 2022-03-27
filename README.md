@@ -79,7 +79,7 @@ Using ```/kitmanager item remove``` to remove an item from a kit<br/>
 <img src="./screenshots/removing-item-from-kit.png"/>
 <br/>
 
-Using ```/kitmanager list``` to display a paginate a list of kits and their items<br/>
+Using ```/kitmanager list``` to paginate a list of kits and their items<br/>
 <img src="./screenshots/paginated-list-of-kits.png"/>
 <br/>
 
