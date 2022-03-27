@@ -13,7 +13,7 @@ A simple discord bot to create, manage and redeem in-game kits using slash-comma
 
 ## Features
 * Redeem and customise kits with slash-commands
-* Kit timeouts (restrict how often a kit can be redeemed)
+* Kit time outs (restrict how often a kit can be redeemed)
 * Guard admin commands behind a role
 * Display players online as an embedded message (optional)
 * Log player reports (optional)
