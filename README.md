@@ -25,6 +25,7 @@ A simple discord bot to create, manage and redeem in-game kits using slash-comma
 * Docker/Docker Compose installed (https://docs.docker.com/compose/install/)
 * Discord bot token with full admin permissions and slash-commands enabled (https://discordpy.readthedocs.io/en/stable/discord.html)
 * Discord bot invited to the guild
+* RCON enabled on host Rust server
 
 ## Installation
 1. Clone the repo ``git clone https://github.com/Morriso8D/rust-bot.git``
