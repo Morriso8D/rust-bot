@@ -30,7 +30,7 @@ export function buildKitEmbedConfirmation(playerName: string) : MessageEmbed{
     return new MessageEmbed()
             .setColor('#0099ff')
             .setDescription(`You are about to give a kit to: \`${playerName}\` Is that right?`)
-            .setFooter({text: 'Click the button to reedem the kit'})
+            .setFooter({text: 'Click the button to redeem the kit'})
 }
 
 export function buildButtonConfirmation() : MessageActionRow {
