@@ -48,31 +48,40 @@ A simple discord bot to create, manage and redeem in-game kits using slash-comma
 
 ## Screenshots
 Using ```/kits``` to redeem a kit (initially displays a select menu of available kits)
-<img src="./screenshots/kits.png"/><br>
+<img src="./screenshots/kits.png"/>
+<br/>
 
 Response after redeeming a kit
 <img src="./screenshots/kit-redeemed.png"/>
+<br/>
 
 Kit timeout response
 <img src="./screenshots/kit-timeout.png"/>
+<br/>
 
 Using ```/kit-manager add``` to create a kit
 <img src="./screenshots/adding-kit.png"/>
+<br/>
 
 Using ```/kit-manager remove``` to remove a kit
 <img src="./screenshots/removing-kit.png"/>
+<br/>
 
 Using ```/kit-manager item add`` to add an item to a kit
 <img src="./screenshots/adding-item-to-kit.png"/>
+<br/>
 
 Response after entering an incorrect item short-name
 <img src="./screenshots/incorrect-item-short-name.png"/>
+<br/>
 
 Using ```/kit-manager item remove``` to remove an item from a kit
 <img src="./screenshots/removing-item-from-kit.png"/>
+<br/>
 
 Using ```/kit-manager list``` to display a paginate a list of kits and their items
 <img src="./screenshots/paginated-list-of-kits.png"/>
+<br/>
 
 Embedded message of players online (refreshes every 5 minutes)
 <img src="./screenshots/players-online.png"/>
