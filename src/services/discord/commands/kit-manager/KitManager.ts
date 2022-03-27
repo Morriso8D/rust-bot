@@ -21,10 +21,8 @@ class AddKit{
     async addHandler(
         @SlashOption('name', {description: 'kit\'s name'})
         name: string,
-        @SlashChoice('Weekly', '7')
-        @SlashChoice('Daily', '1')
-        @SlashOption('usage', {description: 'Commands\'s usage'})
-        usage: string,
+        @SlashOption('usage', {description: 'how often a kit can be redeemed (days)'})
+        usage: number,
         @SlashOption('description', {description: '(maximum 120 characters)'})
         description: string,
         interaction : CommandInteraction
@@ -36,7 +34,7 @@ class AddKit{
             const row = await this.kits.getKit(name)
             if(row.length) return interaction.editReply('⛔ kit name already exists')
 
-            await this.kits.saveKit(name, parseInt(usage), description)
+            await this.kits.saveKit(name, usage, description)
             return interaction.editReply(`💾 \`${name}\` kit saved `)
 
         } catch (error) {

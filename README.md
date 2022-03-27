@@ -6,6 +6,7 @@
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Commands](#commands)
+* [Screenshots](#screenshots)
 
 ## About
 A simple discord bot to create, manage and redeem in-game kits using slash-commands for Rust gaming servers. Also includes a few optional features
@@ -44,3 +45,43 @@ A simple discord bot to create, manage and redeem in-game kits using slash-comma
 | ```/kit-manager remove``` | Remove a kit                                                            | User requires kit manager role  |
 | ```/kit-manager item add``` | Add an item and its quantity to a kit                                 | User requires kit manager role  |
 | ```/kit-manager item remove``` | Remove an item from a kit                                          | User requires kit manager role  |
+
+## Screenshots
+Using ```/kits``` to redeem a kit (initially displays a select menu of available kits)
+<img src="./screenshots/kits.png"/>
+<br/>
+
+Response after redeeming a kit<br/>
+<img src="./screenshots/kit-redeemed.png"/>
+<br/>
+
+Kit timeout response<br/>
+<img src="./screenshots/kit-timeout.png"/>
+<br/>
+
+Using ```/kit-manager add``` to create a kit<br/>
+<img src="./screenshots/adding-kit.png"/>
+<br/>
+
+Using ```/kit-manager remove``` to remove a kit<br/>
+<img src="./screenshots/removing-kit.png"/>
+<br/>
+
+Using ```/kit-manager item add`` to add an item to a kit<br/>
+<img src="./screenshots/adding-item-to-kit.png"/>
+<br/>
+
+Response after entering an incorrect item short-name<br/>
+<img src="./screenshots/incorrect-item-short-name.png"/>
+<br/>
+
+Using ```/kit-manager item remove``` to remove an item from a kit<br/>
+<img src="./screenshots/removing-item-from-kit.png"/>
+<br/>
+
+Using ```/kit-manager list``` to display a paginate a list of kits and their items<br/>
+<img src="./screenshots/paginated-list-of-kits.png"/>
+<br/>
+
+Embedded message of players online (refreshes every 5 minutes)<br/>
+<img src="./screenshots/players-online.png"/>
