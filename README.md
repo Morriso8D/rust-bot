@@ -67,7 +67,7 @@ Using ```/kit-manager remove``` to remove a kit<br/>
 <img src="./screenshots/removing-kit.png"/>
 <br/>
 
-Using ```/kit-manager item add`` to add an item to a kit<br/>
+Using ```/kit-manager item add``` to add an item to a kit<br/>
 <img src="./screenshots/adding-item-to-kit.png"/>
 <br/>
 
