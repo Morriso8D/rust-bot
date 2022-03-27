@@ -48,7 +48,7 @@ A simple discord bot to create, manage and redeem in-game kits using slash-comma
 
 ## Screenshots
 Using ```/kits``` to redeem a kit (initially displays a select menu of available kits)
-<img src="./screenshots/kits.png"/>
+<img src="./screenshots/kits.png"/><br>
 
 Response after redeeming a kit
 <img src="./screenshots/kit-redeemed.png"/>
